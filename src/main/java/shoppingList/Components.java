@@ -39,19 +39,18 @@ class Components {
     }
 
     private TableView<Product> generateCenterTable() {
-         TableColumn<Product, Integer> quantityColumn = new TableColumn<>("quantity");
-         quantityColumn.setMinWidth(50);
-         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn.setMinWidth(60);
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-         TableColumn<Product, String> nameColumn = new TableColumn<>("name");
-         nameColumn.setMinWidth(300);
-         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Product, String> nameColumn = new TableColumn<>("Product");
+        nameColumn.setMinWidth(260);
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableView<Product> table = new TableView<>();
         table.setItems(createObservableList());
         table.getColumns().addAll(quantityColumn,nameColumn);
-
-         return table;
+        return table;
     }
 
     private VBox generateVBox() {
