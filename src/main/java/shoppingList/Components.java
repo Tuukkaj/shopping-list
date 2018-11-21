@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-class CreateComponents {
+class Components {
     ObservableList<Product> products;
     TableView<Product> table;
 

@@ -2,7 +2,6 @@ package shoppingList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -15,10 +14,10 @@ public class ShoppingListMain extends Application {
 
     @Override
     public void start(Stage stage) {
-        CreateComponents createComponents = new CreateComponents();
+        Components components = new Components();
 
 
-        Scene content = new Scene(createComponents.generateBorderPanel(), 640,420);
+        Scene content = new Scene(components.generateBorderPanel(), 640,420);
         stage.setScene(content);
         stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
