@@ -15,12 +15,14 @@ public class ShoppingListMain extends Application {
 
     @Override
     public void start(Stage stage) {
-        Scene content = new Scene(new StackPane(), 640,420);
+        CreateComponents createComponents = new CreateComponents();
+
+
+        Scene content = new Scene(createComponents.generateBorderPanel(), 640,420);
         stage.setScene(content);
         stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
         stage.setTitle("Shopping List");
         stage.show();
     }
-
 }
