@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 class CreateComponents {
-    ObservableList<Product> observableList;
+    ObservableList<Product> products;
     TableView<Product> table;
 
      BorderPane generateBorderPanel() {
