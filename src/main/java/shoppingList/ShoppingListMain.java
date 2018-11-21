@@ -17,7 +17,7 @@ public class ShoppingListMain extends Application {
         Components components = new Components();
 
 
-        Scene content = new Scene(components.generateBorderPanel(), 640,420);
+        Scene content = new Scene(components.generateBorderPanel(), 320,480);
         stage.setScene(content);
         stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
