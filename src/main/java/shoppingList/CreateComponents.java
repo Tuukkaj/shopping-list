@@ -20,57 +20,31 @@ class CreateComponents {
         return borderPane;
     }
 
-    public VBox generateVBox() {
+    private VBox generateVBox() {
         VBox v = new VBox();
         Menu file = new Menu("File");
         //FILE---
-        //BACKGROUNDMUSIC
-        RadioMenuItem backgroundMusic = new RadioMenuItem ("Background music");
-        backgroundMusic.setSelected(true);
-        backgroundMusic.setOnAction((e) -> System.out.println("Background music!!"));
 
-        //DIFFICULTY
-        ToggleGroup toggleGroup = new ToggleGroup();
-        RadioMenuItem item5 = new RadioMenuItem("5");
-        RadioMenuItem item6 = new RadioMenuItem("6");
-        RadioMenuItem item7 = new RadioMenuItem("7");
 
-        Menu toggleMenu = new Menu("skill");
-        toggleMenu.getItems().addAll(item5,item6,item7);
-        item5.setToggleGroup(toggleGroup);
-        item6.setToggleGroup(toggleGroup);
-        item7.setToggleGroup(toggleGroup);
-        item7.setSelected(true);
-
-        //HIGHSCORE
-        MenuItem highScoreItem = new MenuItem("Show high scores");
-        highScoreItem.setOnAction((event -> System.out.println("High score clicked")));
+        //READ FILE
+        MenuItem readFile = new MenuItem("Read file");
+        readFile.setOnAction((event -> System.out.println("File menu opens")));
 
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
 
-        file.getItems().addAll(backgroundMusic, toggleMenu, highScoreItem, exitItem);
-
-        //EDIT----
-        Menu edit = new Menu("Edit");
-
-        MenuItem cutItem = new MenuItem("Cut (ctrl+x)");
-        MenuItem copyItem = new MenuItem("Copy (ctrl+c)");
-        MenuItem pasteItem = new MenuItem("Paste (ctrl+v)");
-        cutItem.setDisable(true);
-        copyItem.setDisable(true);
-        pasteItem.setDisable(true);
-        edit.getItems().addAll(cutItem,copyItem,pasteItem);
+        file.getItems().addAll(readFile, exitItem);
 
         //ABOUT---
         Menu about = new Menu("About");
-        MenuItem aboutItem = new MenuItem("About Lotto App");
+        MenuItem aboutItem = new MenuItem("About Shopping list App");
+        aboutItem.setOnAction(e -> System.out.print("Shopping menu opens"));
 
 
         about.getItems().addAll(aboutItem);
         MenuBar menubar = new MenuBar();
-        menubar.getMenus().addAll(file,edit,about);
+        menubar.getMenus().addAll(file,about);
 
         v.getChildren().add(menubar);
         v.setAlignment(Pos.CENTER);
