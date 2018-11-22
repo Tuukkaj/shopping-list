@@ -105,7 +105,6 @@ class Components {
 
         MenuItem printTable = new MenuItem("Print table");
         printTable.setOnAction(e -> printTableContents());
-        file.getItems().add(printTable);
 
         //READ FILE
         MenuItem readFile = new MenuItem("Read file");
@@ -115,7 +114,7 @@ class Components {
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
 
-        file.getItems().addAll(readFile, exitItem);
+        file.getItems().addAll(printTable, readFile, exitItem);
 
         //ABOUT---
         Menu about = new Menu("About");
