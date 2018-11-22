@@ -6,12 +6,13 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 class Components {
     private TableView<Product> table;
-
     TableView<Product> getTable() {
         return table;
     }
@@ -47,17 +48,40 @@ class Components {
     }
 
     private TableView<Product> generateCenterTable() {
+        //QUALITY COLUMN
         TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
         quantityColumn.setMinWidth(60);
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {
+                return String.valueOf(object);
+            }
 
+            @Override
+            public Integer fromString(String string) {
+                return Integer.parseInt(string);
+            }
+        }));
+        quantityColumn.setOnEditCommit(cellEdit -> {
+            (cellEdit.getTableView().getItems().get(
+                    cellEdit.getTablePosition().getRow())
+            ).setQuantity(cellEdit.getNewValue());
+        });
+
+        //NAME COLUMN
         TableColumn<Product, String> nameColumn = new TableColumn<>("Product");
         nameColumn.setMinWidth(260);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameColumn.setOnEditCommit(cellEdit ->
+                cellEdit.getTableView().getItems().get(cellEdit.getTablePosition().getRow()).setName(cellEdit.getNewValue()));
 
+        //TABLE Creation
         TableView<Product> table = new TableView<>();
         table.setItems(createObservableList());
         table.getColumns().addAll(quantityColumn,nameColumn);
+        table.setEditable(true);
         return table;
     }
 
