@@ -13,6 +13,8 @@ import javafx.util.StringConverter;
 
 class Components {
     private TableView<Product> table;
+    private ObservableList<Product> products;
+
     TableView<Product> getTable() {
         return table;
     }
@@ -48,6 +50,7 @@ class Components {
     }
 
     private TableView<Product> generateCenterTable() {
+        ObservableList<Product> products = createObservableList();
         //QUALITY COLUMN
         TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
         quantityColumn.setMinWidth(60);
@@ -60,13 +63,18 @@ class Components {
 
             @Override
             public Integer fromString(String string) {
+                if(string.equalsIgnoreCase("")) {
+                    return null;
+                }
                 return Integer.parseInt(string);
             }
         }));
         quantityColumn.setOnEditCommit(cellEdit -> {
-            (cellEdit.getTableView().getItems().get(
-                    cellEdit.getTablePosition().getRow())
-            ).setQuantity(cellEdit.getNewValue());
+            if(cellEdit.getNewValue() == null) {
+                products.remove(cellEdit.getTablePosition().getRow());
+            } else {
+                cellEdit.getTableView().getItems().get(cellEdit.getTablePosition().getRow()).setQuantity(cellEdit.getNewValue());
+            }
         });
 
         //NAME COLUMN
@@ -74,12 +82,17 @@ class Components {
         nameColumn.setMinWidth(260);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        nameColumn.setOnEditCommit(cellEdit ->
-                cellEdit.getTableView().getItems().get(cellEdit.getTablePosition().getRow()).setName(cellEdit.getNewValue()));
+        nameColumn.setOnEditCommit(cellEdit -> {
+            if(cellEdit.getNewValue().equalsIgnoreCase("")) {
+                products.remove(cellEdit.getTablePosition().getRow());
+            } else {
+                cellEdit.getTableView().getItems().get(cellEdit.getTablePosition().getRow()).setName(cellEdit.getNewValue());
+            }
+        });
 
         //TABLE Creation
         TableView<Product> table = new TableView<>();
-        table.setItems(createObservableList());
+        table.setItems(products);
         table.getColumns().addAll(quantityColumn,nameColumn);
         table.setEditable(true);
         return table;
