@@ -13,11 +13,20 @@ class Components {
     ObservableList<Product> products;
     TableView<Product> table;
 
+    TableView<Product> getTable() {
+        return table;
+    }
+
+    void printTableContents() {
+        table.getItems().forEach(p -> System.out.print("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
+    }
+
      BorderPane generateBorderPanel() {
         BorderPane borderPane = new BorderPane();
 
         borderPane.setTop(generateVBox());
-        borderPane.setCenter(generateCenterTable());
+        table = generateCenterTable();
+        borderPane.setCenter(table);
 
         /*
         borderPane.setBottom(iFeelLuckyButton);
