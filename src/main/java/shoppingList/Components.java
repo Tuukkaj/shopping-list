@@ -10,15 +10,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 class Components {
-    ObservableList<Product> products;
-    TableView<Product> table;
+    private TableView<Product> table;
 
     TableView<Product> getTable() {
         return table;
     }
 
     void printTableContents() {
-        table.getItems().forEach(p -> System.out.print("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
+        table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
     }
 
      BorderPane generateBorderPanel() {
@@ -66,6 +65,10 @@ class Components {
         VBox v = new VBox();
         Menu file = new Menu("File");
         //FILE---
+
+        MenuItem printTable = new MenuItem("Print table");
+        printTable.setOnAction(e -> printTableContents());
+        file.getItems().add(printTable);
 
         //READ FILE
         MenuItem readFile = new MenuItem("Read file");
