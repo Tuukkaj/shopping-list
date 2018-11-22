@@ -16,8 +16,6 @@ public class ShoppingListMain extends Application {
     @Override
     public void start(Stage stage) {
         Components components = new Components();
-
-
         Scene content = new Scene(components.generateBorderPanel(), 320,480);
         stage.setScene(content);
         stage.initStyle(StageStyle.UNIFIED);

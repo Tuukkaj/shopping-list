@@ -26,7 +26,7 @@ class Components {
      BorderPane generateBorderPanel() {
         BorderPane borderPane = new BorderPane();
 
-        borderPane.setTop(generateVBox());
+        borderPane.setTop(generateTopMenuBar());
         table = generateCenterTable();
         borderPane.setCenter(table);
 
@@ -98,7 +98,7 @@ class Components {
         return table;
     }
 
-    private VBox generateVBox() {
+    private VBox generateTopMenuBar() {
         VBox v = new VBox();
         Menu file = new Menu("File");
         //FILE---
