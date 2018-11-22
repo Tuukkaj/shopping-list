@@ -10,6 +10,13 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import jsonParser.JSONComponent.JSONArray;
+import jsonParser.JSONComponent.JSONFileData;
+import jsonParser.JSONComponent.JSONItem;
+import jsonParser.JSONParser;
+
+import java.io.File;
+import java.util.ArrayList;
 
 class Components {
     private TableView<Product> table;
@@ -103,18 +110,23 @@ class Components {
         Menu file = new Menu("File");
         //FILE---
 
-        MenuItem printTable = new MenuItem("Print table");
+        //PRINT TABLE
+        MenuItem printTable = new MenuItem("Print Table");
         printTable.setOnAction(e -> printTableContents());
 
         //READ FILE
-        MenuItem readFile = new MenuItem("Read file");
+        MenuItem readFile = new MenuItem("Read File");
         readFile.setOnAction((event -> System.out.println("File menu opens")));
+
+        //SAVE FILE
+        MenuItem save = new MenuItem("Save File");
+        save.setOnAction(actionEvent -> saveTableViewAsJson());
 
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
 
-        file.getItems().addAll(printTable, readFile, exitItem);
+        file.getItems().addAll(printTable, readFile, save, exitItem);
 
         //ABOUT---
         Menu about = new Menu("About");
@@ -130,5 +142,20 @@ class Components {
         v.setAlignment(Pos.CENTER);
         v.setSpacing(20);
         return v;
+    }
+
+    private void saveTableViewAsJson() {
+        JSONParser parser = new JSONParser();
+        JSONFileData data = new JSONFileData();
+        JSONArray array = new JSONArray("shoppingList");
+
+        table.getItems().forEach(product -> {
+            ArrayList<JSONItem> itemList = new ArrayList<>();
+            itemList.add(new JSONItem("product", product.getName()));
+            itemList.add(new JSONItem("quantity", product.getQuantity()));
+            array.add(itemList);
+        });
+        data.add(array);
+        parser.write(data, new File("resources/list.json"));
     }
 }
