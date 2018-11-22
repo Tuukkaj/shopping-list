@@ -2,6 +2,7 @@ package shoppingList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -21,6 +22,7 @@ public class ShoppingListMain extends Application {
         stage.setScene(content);
         stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
+        stage.getIcons().add(new Image("file:resources/shoppingListIcon.png"));
         stage.setTitle("Shopping List");
         stage.show();
     }
