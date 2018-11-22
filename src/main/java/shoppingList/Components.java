@@ -116,7 +116,7 @@ class Components {
 
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
-        readFile.setOnAction((event -> System.out.println("File menu opens")));
+        readFile.setOnAction((event -> readJsonFile(new File("resources/list.json"))));
 
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
@@ -142,6 +142,17 @@ class Components {
         v.setAlignment(Pos.CENTER);
         v.setSpacing(20);
         return v;
+    }
+
+    private void readJsonFile(File file) {
+        JSONFileData fileData = new JSONParser().read(file);
+        JSONArray array = ((JSONArray) fileData.getComponent("shoppingList"));
+        table.getItems().clear();
+
+        array.getData().forEach(linkedList -> {
+            System.out.println(String.valueOf(linkedList.get("product")) + Integer.valueOf(String.valueOf(linkedList.get("quantity"))));
+            table.getItems().add(new Product(String.valueOf(linkedList.get("product")), Integer.valueOf(String.valueOf(linkedList.get("quantity")))));
+        });
     }
 
     private void saveTableViewAsJson() {
