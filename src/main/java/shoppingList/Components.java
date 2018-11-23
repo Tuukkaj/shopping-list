@@ -116,10 +116,10 @@ class Components {
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
         readFile.setOnAction((event -> generateFileChooser()));
-        readFile.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_ANY));
+        readFile.setAccelerator(KeyCombination.keyCombination("SHORTCUT+R"));
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
-        save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
+        save.setAccelerator(KeyCombination.keyCombination("SHORTCUT+S"));
         save.setOnAction(actionEvent -> saveTableViewAsJson());
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
