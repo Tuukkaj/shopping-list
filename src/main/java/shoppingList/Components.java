@@ -1,5 +1,9 @@
 package shoppingList;
 
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.users.FullAccount;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -210,5 +214,19 @@ class Components {
     Components(Stage stage) {
         this.stage = stage;
         System.out.println("WIDTH : "  + stage.getWidth() + " HEIGHT: " + stage.getHeight());
+    }
+
+    private void uploadToDropBox() {
+         final String token = "";
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
+        DbxClientV2 client = new DbxClientV2(config, token);
+
+        try {
+            FullAccount account = client.users().getCurrentAccount();
+            System.out.println(account.getName().getDisplayName());
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+
     }
 }
