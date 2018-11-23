@@ -189,7 +189,8 @@ class Components {
         alert.showAndWait();
     }
 
-    void printTableContents() {
+    //Remove in final release.
+    private void printTableContents() {
         table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
     }
 
