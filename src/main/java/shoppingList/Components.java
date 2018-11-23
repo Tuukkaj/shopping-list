@@ -7,6 +7,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -115,6 +118,7 @@ class Components {
         readFile.setOnAction((event -> generateFileChooser()));
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
+        save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
         save.setOnAction(actionEvent -> saveTableViewAsJson());
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
