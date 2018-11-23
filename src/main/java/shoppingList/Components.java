@@ -47,7 +47,7 @@ class Components {
         return borderPane;
     }
 
-    public ObservableList<Product> createObservableList() {
+    private ObservableList<Product> createObservableList() {
          ObservableList<Product> products = FXCollections.observableArrayList();
          products.add(new Product("Cat",1));
          products.add(new Product("Cat food 1kg",2));
@@ -173,7 +173,7 @@ class Components {
         parser.write(data, new File("resources/list.json"));
     }
 
-    public void generateFileChooser() {
+    private void generateFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
@@ -183,11 +183,15 @@ class Components {
         }
     }
 
-    public void generateAboutDialog() {
+    private void generateAboutDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Author - Tuukka Juusela");
         alert.setHeaderText("This program is part of school project\nin Tampere University of Applied Sciences.");
         alert.setContentText("Used to save shopping list as a json file.");
         alert.showAndWait();
+    }
+
+    void printTableContents() {
+        table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
     }
 }
