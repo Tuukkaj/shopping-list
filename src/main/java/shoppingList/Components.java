@@ -116,7 +116,7 @@ class Components {
 
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
-        readFile.setOnAction((event -> readJsonFile(new File("resources/list.json"))));
+        readFile.setOnAction((event -> generateFileChooser()));
 
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
@@ -173,11 +173,12 @@ class Components {
 
     private void generateFileChooser() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Open JSON File");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+                new FileChooser.ExtensionFilter("JSON files", "*.json"));
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
+            readJsonFile(selectedFile);
         }
     }
 
