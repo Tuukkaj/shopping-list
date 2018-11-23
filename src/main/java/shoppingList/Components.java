@@ -3,6 +3,7 @@ package shoppingList;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.users.FullAccount;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,9 +25,10 @@ import jsonParser.JSONComponent.JSONFileData;
 import jsonParser.JSONComponent.JSONItem;
 import jsonParser.JSONParser;
 
-import java.io.File;
+import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 class Components {
     private TableView<Product> table;
@@ -222,16 +224,29 @@ class Components {
     }
 
     private void uploadToDropBox() {
-         final String token = "";
-        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
-        DbxClientV2 client = new DbxClientV2(config, token);
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("Upload to Dropbox");
+        dialog.setHeaderText("Enter to your Dropbox account token");
+        dialog.setContentText("Token: ");
 
-        try {
-            FullAccount account = client.users().getCurrentAccount();
-            System.out.println(account.getName().getDisplayName());
-        } catch (DbxException e) {
-            e.printStackTrace();
+        Optional<String> token = dialog.showAndWait();
+        if (token.isPresent()){
+            DbxRequestConfig config = DbxRequestConfig.newBuilder("Tuukka Lister/1.0").build();
+            DbxClientV2 client = new DbxClientV2(config, token.get());
+
+            try {
+                FullAccount account = client.users().getCurrentAccount();
+                System.out.println(account.getName().getDisplayName());
+                try (InputStream in = new FileInputStream("resources/list.json")) {
+                    FileMetadata metadata = client.files().uploadBuilder("/list.json").uploadAndFinish(in);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (DbxException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 }
