@@ -9,6 +9,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import jsonParser.JSONComponent.JSONArray;
 import jsonParser.JSONComponent.JSONFileData;
@@ -20,15 +22,13 @@ import java.util.ArrayList;
 
 class Components {
     private TableView<Product> table;
-    private ObservableList<Product> products;
+    private Stage stage;
 
     TableView<Product> getTable() {
         return table;
     }
 
-    void printTableContents() {
-        table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
-    }
+
 
      BorderPane generateBorderPanel() {
         BorderPane borderPane = new BorderPane();
@@ -133,7 +133,6 @@ class Components {
         MenuItem aboutItem = new MenuItem("About Shopping list App");
         aboutItem.setOnAction(actionEvent -> {
             generateAboutDialog();
-            System.out.println("This works");
         });
 
 
@@ -172,6 +171,16 @@ class Components {
         });
         data.add(array);
         parser.write(data, new File("resources/list.json"));
+    }
+
+    public void generateFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+        }
     }
 
     public void generateAboutDialog() {
