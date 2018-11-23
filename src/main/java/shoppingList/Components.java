@@ -93,6 +93,7 @@ class Components {
         TableView<Product> table = new TableView<>();
         table.setOnMouseClicked(e -> {
             if(e.getClickCount() >= 3) {
+                System.out.println("WIDTH : "  + stage.getWidth() + " HEIGHT: " + stage.getHeight());
                 table.getItems().add(new Product("-", 1));
             }
         });
@@ -104,37 +105,34 @@ class Components {
 
     private VBox generateTopMenuBar() {
         VBox v = new VBox();
-        Menu file = new Menu("File");
         //FILE---
-
+        Menu file = new Menu("File");
         //PRINT TABLE
         MenuItem printTable = new MenuItem("Print Table");
         printTable.setOnAction(e -> printTableContents());
-
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
         readFile.setOnAction((event -> generateFileChooser()));
-
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
         save.setOnAction(actionEvent -> saveTableViewAsJson());
-
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
-
         file.getItems().addAll(printTable, readFile, save, exitItem);
 
-        //ABOUT---
-        Menu about = new Menu("About");
+
+        //HELP--
+        Menu help = new Menu("Help");
+        MenuItem helpItem = new MenuItem("Help");
+        //helpItem.setOnAction(actionEvent -> generateAboutDialog());
         MenuItem aboutItem = new MenuItem("About Shopping list App");
         aboutItem.setOnAction(actionEvent -> generateAboutDialog());
+        help.getItems().addAll(helpItem,aboutItem);
 
 
-
-        about.getItems().addAll(aboutItem);
         MenuBar menubar = new MenuBar();
-        menubar.getMenus().addAll(file,about);
+        menubar.getMenus().addAll(file,help);
 
         v.getChildren().add(menubar);
         v.setAlignment(Pos.CENTER);
@@ -194,5 +192,6 @@ class Components {
 
     Components(Stage stage) {
         this.stage = stage;
+        System.out.println("WIDTH : "  + stage.getWidth() + " HEIGHT: " + stage.getHeight());
     }
 }
