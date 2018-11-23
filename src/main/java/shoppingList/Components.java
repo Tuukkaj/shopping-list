@@ -131,9 +131,7 @@ class Components {
         //ABOUT---
         Menu about = new Menu("About");
         MenuItem aboutItem = new MenuItem("About Shopping list App");
-        aboutItem.setOnAction(actionEvent -> {
-            generateAboutDialog();
-        });
+        aboutItem.setOnAction(actionEvent -> generateAboutDialog());
 
 
 
@@ -193,5 +191,9 @@ class Components {
 
     void printTableContents() {
         table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
+    }
+
+    Components(Stage stage) {
+        this.stage = stage;
     }
 }
