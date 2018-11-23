@@ -42,9 +42,8 @@ class Components {
 
     private ObservableList<Product> createObservableList() {
          ObservableList<Product> products = FXCollections.observableArrayList();
-         products.add(new Product("Cat",1));
-         products.add(new Product("Cat food 1kg",2));
-         products.add(new Product("Cat launcher",42));
+         products.add(new Product("You can modify item by double clicking them",1));
+         products.add(new Product("And add items by triple clicking",2));
 
          return products;
     }
