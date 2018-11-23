@@ -118,6 +118,11 @@ class Components {
         //PRINT TABLE
         MenuItem printTable = new MenuItem("Print Table");
         printTable.setOnAction(e -> printTableContents());
+        //UPLOAD DROPBOX
+        MenuItem uploadItem = new MenuItem("Upload to Dropbox");
+        uploadItem.setOnAction(actionEvent -> uploadToDropBox());
+        uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));
+
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
         readFile.setOnAction((event -> generateFileChooser()));
@@ -129,7 +134,7 @@ class Components {
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
-        file.getItems().addAll(printTable, readFile, save, exitItem);
+        file.getItems().addAll(printTable, uploadItem, readFile, save, exitItem);
 
 
         //HELP--
