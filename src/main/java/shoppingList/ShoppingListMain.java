@@ -21,7 +21,7 @@ public class ShoppingListMain extends Application {
         stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
         stage.getIcons().add(new Image("file:resources/shoppingListIcon.png"));
-        stage.setTitle("Shopping List");
+        stage.setTitle("Tuukka Lister");
         stage.show();
     }
 }
