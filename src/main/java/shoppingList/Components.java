@@ -18,6 +18,7 @@ import jsonParser.JSONComponent.JSONItem;
 import jsonParser.JSONParser;
 
 import java.io.File;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 class Components {
@@ -42,8 +43,7 @@ class Components {
 
     private ObservableList<Product> createObservableList() {
          ObservableList<Product> products = FXCollections.observableArrayList();
-         products.add(new Product("You can modify item by double clicking them",1));
-         products.add(new Product("And add items by triple clicking",2));
+         products.add(new Product("Example item",1));
 
          return products;
     }
@@ -142,13 +142,14 @@ class Components {
 
     private void readJsonFile(File file) {
         JSONFileData fileData = new JSONParser().read(file);
-        JSONArray array = ((JSONArray) fileData.getComponent("shoppingList"));
-        table.getItems().clear();
-
-        array.getData().forEach(linkedList -> {
-            System.out.println(String.valueOf(linkedList.get("product")) + Integer.valueOf(String.valueOf(linkedList.get("quantity"))));
-            table.getItems().add(new Product(String.valueOf(linkedList.get("product")), Integer.valueOf(String.valueOf(linkedList.get("quantity")))));
-        });
+        JSONArray array;
+        try {
+            array = ((JSONArray) fileData.getComponent("shoppingList"));
+            table.getItems().clear();
+            array.getData().forEach(linkedList -> table.getItems().add(new Product(String.valueOf(linkedList.get("product")), Integer.valueOf(String.valueOf(linkedList.get("quantity"))))));
+        } catch (InvalidParameterException e) {
+            generateNotProperJSONFileWarning();
+        }
     }
 
     private void saveTableViewAsJson() {
@@ -182,6 +183,14 @@ class Components {
         alert.setTitle("Author - Tuukka Juusela");
         alert.setHeaderText("This program is part of school project\nin Tampere University of Applied Sciences.");
         alert.setContentText("Used to save shopping list as a json file.");
+        alert.showAndWait();
+    }
+
+    private void generateNotProperJSONFileWarning() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Problem occurred");
+        alert.setHeaderText("JSON file you tried to read is\nnot supported by Tuukka Lister.");
+        alert.setContentText("Ensure that file you tried to read is made with this program.");
         alert.showAndWait();
     }
 
