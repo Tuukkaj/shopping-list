@@ -158,10 +158,12 @@ class Components {
         JSONArray array = new JSONArray("shoppingList");
 
         table.getItems().forEach(product -> {
-            ArrayList<JSONItem> itemList = new ArrayList<>();
-            itemList.add(new JSONItem("product", product.getName()));
-            itemList.add(new JSONItem("quantity", product.getQuantity()));
-            array.add(itemList);
+            if(!product.getName().equalsIgnoreCase("-")) {
+                ArrayList<JSONItem> itemList = new ArrayList<>();
+                itemList.add(new JSONItem("product", product.getName()));
+                itemList.add(new JSONItem("quantity", product.getQuantity()));
+                array.add(itemList);
+            }
         });
         data.add(array);
         parser.write(data, new File("resources/list.json"));
