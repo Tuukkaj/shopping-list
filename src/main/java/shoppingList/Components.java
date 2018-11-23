@@ -131,7 +131,11 @@ class Components {
         //ABOUT---
         Menu about = new Menu("About");
         MenuItem aboutItem = new MenuItem("About Shopping list App");
-        aboutItem.setOnAction(e -> System.out.print("Shopping menu opens"));
+        aboutItem.setOnAction(actionEvent -> {
+            generateAboutDialog();
+            System.out.println("This works");
+        });
+
 
 
         about.getItems().addAll(aboutItem);
@@ -168,5 +172,13 @@ class Components {
         });
         data.add(array);
         parser.write(data, new File("resources/list.json"));
+    }
+
+    public void generateAboutDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Author - Tuukka Juusela");
+        alert.setHeaderText("This program is part of school project\nin Tampere University of Applied Sciences.");
+        alert.setContentText("Used to save shopping list as a json file.");
+        alert.showAndWait();
     }
 }
