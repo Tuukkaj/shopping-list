@@ -24,12 +24,6 @@ class Components {
     private TableView<Product> table;
     private Stage stage;
 
-    TableView<Product> getTable() {
-        return table;
-    }
-
-
-
      BorderPane generateBorderPanel() {
         BorderPane borderPane = new BorderPane();
 
