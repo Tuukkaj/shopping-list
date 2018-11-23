@@ -92,7 +92,7 @@ class Components {
         //TABLE Creation
         TableView<Product> table = new TableView<>();
         table.setOnMouseClicked(e -> {
-            if(e.getClickCount() >= 3) {
+            if(e.getClickCount() == 3) {
                 System.out.println("WIDTH : "  + stage.getWidth() + " HEIGHT: " + stage.getHeight());
                 table.getItems().add(new Product("-", 1));
             }
