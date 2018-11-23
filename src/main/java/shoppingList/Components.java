@@ -36,9 +36,6 @@ class Components {
         borderPane.setTop(generateTopMenuBar());
         table = generateCenterTable();
         borderPane.setCenter(table);
-        Button addButton = generateAddButton();
-        borderPane.setBottom(addButton);
-        borderPane.setAlignment(addButton, Pos.CENTER);
         /*
         borderPane.setBottom(iFeelLuckyButton);
         borderPane.setRight(generateRightBorder());
@@ -47,13 +44,6 @@ class Components {
         borderPane.setMargin(iFeelLuckyButton, new Insets(12,12,12,12));
 */
         return borderPane;
-    }
-
-    private Button generateAddButton() {
-        Button button = new Button("Add");
-        button.setLayoutX(100);
-        button.setOnAction(actionEvent -> table.getItems().add(table.getItems().size(), new Product("-",1)));
-        return button;
     }
 
     private ObservableList<Product> createObservableList() {
@@ -108,6 +98,11 @@ class Components {
 
         //TABLE Creation
         TableView<Product> table = new TableView<>();
+        table.setOnMouseClicked(e -> {
+            if(e.getClickCount() >= 3) {
+                table.getItems().add(new Product("-", 1));
+            }
+        });
         table.setItems(products);
         table.getColumns().addAll(quantityColumn,nameColumn);
         table.setEditable(true);
