@@ -116,6 +116,7 @@ class Components {
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
         readFile.setOnAction((event -> generateFileChooser()));
+        readFile.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_ANY));
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
         save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
