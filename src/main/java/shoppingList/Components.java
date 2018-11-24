@@ -266,11 +266,22 @@ class Components {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             } catch (DbxException e) {
+                generateUploadFailedDialog();
                 e.printStackTrace();
             }
         }
+    }
+
+    private void generateUploadFailedDialog() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:resources/dropbox.png"));
+        alert.setTitle("Upload Failed");
+        alert.setHeaderText("Something went wrong :-(");
+        alert.setContentText("Check that file name is not taken in Tuukka Lister's folder\nand that the Dropbox code is correct");
+        alert.showAndWait();
     }
 
     private Optional<Pair<String, String>> askDropboxInformation() {
