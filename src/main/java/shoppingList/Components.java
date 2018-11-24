@@ -8,17 +8,23 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import jsonParser.JSONComponent.JSONArray;
 import jsonParser.JSONComponent.JSONFileData;
@@ -265,7 +271,7 @@ class Components {
          JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
         final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());
-
+        createDoubleDialog();
         DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
         DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
         DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
@@ -287,8 +293,6 @@ class Components {
             DbxAuthFinish authFinish = auth.finishFromCode(token);
             DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
             FullAccount account = client.users().getCurrentAccount();
-            System.out.println(account.getName().getDisplayName());
-
                 try (InputStream in = new FileInputStream("resources/TuukkaListerDropbox.json")) {
                     FileMetadata metadata = client.files().uploadBuilder("/TuukkaListerDropbox.json").uploadAndFinish(in);
                 } catch (FileNotFoundException e) {
@@ -301,7 +305,6 @@ class Components {
                 e.printStackTrace();
             }
         }
-
         if(savedFile.delete()) {
             System.out.println("FILE DELETED");
         }
@@ -315,5 +318,54 @@ class Components {
 
         Optional<String> token = dialog.showAndWait();
         return token;
+    }
+
+    private Optional<Pair<String, String>> createDoubleDialog() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Dropbox upload");
+        dialog.setHeaderText("Tab opened in your browser.\nClick allow and copy the Dropbox code. ");
+
+        dialog.setGraphic(new ImageView("file:resources/dropbox.png"));
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.getIcons().add(new Image("file:resources/dropbox.png"));
+        ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField fileNameField = new TextField();
+        fileNameField.setPromptText("example.json");
+        TextField tokenField = new TextField();
+        tokenField.setPromptText("Dropbox code");
+
+        grid.add(new Label("File name:"), 0, 0);
+        grid.add(fileNameField, 1, 0);
+        grid.add(new Label("Dropbox code:"), 0, 1);
+        grid.add(tokenField, 1, 1);
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        fileNameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        Platform.runLater(fileNameField::requestFocus);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(fileNameField.getText(), tokenField.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        return result;
     }
 }
