@@ -46,8 +46,35 @@ class Components {
         borderPane.setTop(generateTopMenuBar());
         table = generateCenterTable();
         borderPane.setCenter(table);
+        Button add = generateAddButton();
+        Button remove = generateRemoveButton();
+       // add.setAlignment(Pos.CENTER_LEFT);
+       // remove.setAlignment(Pos.CENTER_RIGHT);
+        BorderPane innerPane = new BorderPane();
+        add.setAlignment(Pos.CENTER_LEFT);
+        remove.setAlignment(Pos.CENTER_RIGHT);
+        innerPane.setLeft(add);
+        innerPane.setRight(remove);
+        borderPane.setBottom(innerPane);
+
 
         return borderPane;
+    }
+
+    private Button generateAddButton() {
+        Button b = new Button("Add");
+        b.setOnAction(e -> table.getItems().add(new Product("-", 1)));
+
+        return b;
+    }
+
+    private Button generateRemoveButton() {
+         Button b = new Button("Remove selected");
+         b.setOnAction(e -> {
+             table.getItems().remove(table.getFocusModel().getFocusedCell().getRow());
+         });
+
+         return b;
     }
 
     private ObservableList<Product> createObservableList() {
@@ -265,9 +292,9 @@ class Components {
                 .build();
         String authorizeUrl = auth.authorize(authRequest);
 
-
-        Optional<Pair<String, String>> dBoxInfo = askDropboxInformation();
         application.getHostServices().showDocument(authorizeUrl);
+        Optional<Pair<String, String>> dBoxInfo = askDropboxInformation();
+
 
         if(dBoxInfo.isPresent()) {
             String code = dBoxInfo.get().getValue().trim();
@@ -301,8 +328,8 @@ class Components {
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("file:icons/dropbox.png"));
-        alert.setTitle("Upload Failed");
-        alert.setHeaderText("Something went wrong :-(");
+        alert.setTitle("Something went wrong :-(");
+        alert.setHeaderText(null);
         alert.setContentText("Check that file name is not taken in Tuukka Lister's folder\nand that the Dropbox code is correct");
         alert.showAndWait();
     }
