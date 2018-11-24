@@ -262,9 +262,11 @@ class Components {
     }
 
     private void testAuth() {
-        final String APP_KEY = "XXX";
-        final String APP_SECRET = "XXX";
-        DbxRequestConfig requestConfig = new DbxRequestConfig("text-edit/0.1");
+         JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
+        final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
+        final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());
+
+        DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
         DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
         DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
         DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
