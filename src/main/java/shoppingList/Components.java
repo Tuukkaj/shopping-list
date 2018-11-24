@@ -281,19 +281,22 @@ class Components {
 
         application.getHostServices().showDocument(authorizeUrl);
 
-        File savedFile = saveTableViewAsJson("TuukkaListerDropbox.json");
-        System.out.println("File saved: " + savedFile.getPath());
-        Optional<String> code = textInput("Upload to Dropbox",
-                "Tab openend in your browser.\nCopy the code and paste it below", "code: ");
+        Optional<Pair<String, String>> dBoxInfo = askDropboxInformation();
 
-        if (code.isPresent()) {
-            String token = code.get().trim();
+        if(dBoxInfo.isPresent()) {
+            String code = dBoxInfo.get().getValue().trim();
+            String jsonFileName = dBoxInfo.get().getKey();
+            if(!jsonFileName.endsWith(".json")) {
+                jsonFileName += ".json";
+            }
+
+            saveTableViewAsJson(jsonFileName);
+
             try {
-            DbxAuthFinish authFinish = auth.finishFromCode(token);
-            DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-            FullAccount account = client.users().getCurrentAccount();
-                try (InputStream in = new FileInputStream("resources/TuukkaListerDropbox.json")) {
-                    FileMetadata metadata = client.files().uploadBuilder("/TuukkaListerDropbox.json").uploadAndFinish(in);
+                DbxAuthFinish authFinish = auth.finishFromCode(code);
+                DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
+                try (InputStream in = new FileInputStream("resources/"+jsonFileName)) {
+                    FileMetadata metadata = client.files().uploadBuilder("/"+jsonFileName).uploadAndFinish(in);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -304,10 +307,8 @@ class Components {
                 e.printStackTrace();
             }
         }
-        if(savedFile.delete()) {
-            System.out.println("FILE DELETED");
-        }
     }
+
 
     private Optional<String> textInput(String title, String header, String content) {
         TextInputDialog dialog = new TextInputDialog("");
