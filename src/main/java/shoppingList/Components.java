@@ -259,7 +259,7 @@ class Components {
             try {
                 DbxAuthFinish authFinish = auth.finishFromCode(code);
                 DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-                try (InputStream in = new FileInputStream("resources/"+jsonFileName)) {
+                try (InputStream in = new FileInputStream("icons/"+jsonFileName)) {
                     FileMetadata metadata = client.files().uploadBuilder("/"+jsonFileName).uploadAndFinish(in);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -277,7 +277,7 @@ class Components {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("file:resources/dropbox.png"));
+        stage.getIcons().add(new Image("file:icons/dropbox.png"));
         alert.setTitle("Upload Failed");
         alert.setHeaderText("Something went wrong :-(");
         alert.setContentText("Check that file name is not taken in Tuukka Lister's folder\nand that the Dropbox code is correct");
@@ -289,9 +289,9 @@ class Components {
         dialog.setTitle("Dropbox upload");
         dialog.setHeaderText("Tab opened in your browser.\nClick allow and copy the Dropbox code. ");
 
-        dialog.setGraphic(new ImageView("file:resources/dropbox.png"));
+        dialog.setGraphic(new ImageView("file:icons/dropbox.png"));
         Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        dialogStage.getIcons().add(new Image("file:resources/dropbox.png"));
+        dialogStage.getIcons().add(new Image("file:icons/dropbox.png"));
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 

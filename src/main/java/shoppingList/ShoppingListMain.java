@@ -20,7 +20,7 @@ public class ShoppingListMain extends Application {
         stage.setScene(content);
         stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
-        stage.getIcons().add(new Image("file:resources/shoppingListIcon.png"));
+        stage.getIcons().add(new Image("file:icons/shoppingListIcon.png"));
         stage.setTitle("Tuukka Lister");
         stage.show();
     }
