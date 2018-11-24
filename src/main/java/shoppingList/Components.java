@@ -3,7 +3,6 @@ package shoppingList;
 import com.dropbox.core.*;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.users.FullAccount;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -16,8 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -34,7 +31,6 @@ import jsonParser.JSONParser;
 import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Optional;
 
 class Components {
@@ -124,7 +120,7 @@ class Components {
         printTable.setOnAction(e -> printTableContents());
         //UPLOAD DROPBOX
         MenuItem uploadItem = new MenuItem("Upload to Dropbox");
-        uploadItem.setOnAction(actionEvent -> testAuth());
+        uploadItem.setOnAction(actionEvent -> uploadCurrentListToDropbox());
         uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));
 
         //READ FILE
@@ -235,7 +231,7 @@ class Components {
         this.application = app;
     }
 
-    private void testAuth() {
+    private void uploadCurrentListToDropbox() {
          JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
         final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());
