@@ -1,10 +1,10 @@
 package shoppingList;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.*;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.users.FullAccount;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,11 +28,13 @@ import jsonParser.JSONParser;
 import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
 
 class Components {
     private TableView<Product> table;
     private Stage stage;
+    private Application application;
 
      BorderPane generateBorderPanel() {
         BorderPane borderPane = new BorderPane();
@@ -122,7 +124,7 @@ class Components {
         printTable.setOnAction(e -> printTableContents());
         //UPLOAD DROPBOX
         MenuItem uploadItem = new MenuItem("Upload to Dropbox");
-        uploadItem.setOnAction(actionEvent -> uploadToDropBox());
+        uploadItem.setOnAction(actionEvent -> testAuth());
         uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));
 
         //READ FILE
@@ -222,8 +224,9 @@ class Components {
         table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
     }
 
-    Components(Stage stage) {
+    Components(Stage stage, Application app) {
         this.stage = stage;
+        this.application = app;
     }
 
     private void uploadToDropBox() {
@@ -256,5 +259,40 @@ class Components {
                 }
             }
         }
+    }
+
+    private void testAuth() {
+        final String APP_KEY = "XXX";
+        final String APP_SECRET = "XXX";
+        DbxRequestConfig requestConfig = new DbxRequestConfig("text-edit/0.1");
+        DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
+        DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
+        DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
+                .withNoRedirect()
+                .build();
+        String authorizeUrl = auth.authorize(authRequest);
+        application.getHostServices().showDocument(authorizeUrl);
+        Optional<String> code = textInput("Upload to Dropbox", "Tab openend in your browser.\nCopy the code and paste it below", "code: ");
+        if (code.isPresent()) {
+            String token = code.get().trim();
+            try {
+            DbxAuthFinish authFinish = auth.finishFromCode(token);
+            DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
+            FullAccount account = client.users().getCurrentAccount();
+            System.out.println(account.getName().getDisplayName());
+            } catch (DbxException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Optional<String> textInput(String title, String header, String content) {
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(content);
+
+        Optional<String> token = dialog.showAndWait();
+        return token;
     }
 }
