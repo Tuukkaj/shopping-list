@@ -224,32 +224,36 @@ class Components {
 
     Components(Stage stage) {
         this.stage = stage;
-        System.out.println("WIDTH : "  + stage.getWidth() + " HEIGHT: " + stage.getHeight());
     }
 
     private void uploadToDropBox() {
-        TextInputDialog dialog = new TextInputDialog("");
-        dialog.setTitle("Upload to Dropbox");
-        dialog.setHeaderText("Enter to your Dropbox account token");
-        dialog.setContentText("Token: ");
+        File uploadFile = generateFileChooser();
 
-        Optional<String> token = dialog.showAndWait();
-        if (token.isPresent()){
-            DbxRequestConfig config = DbxRequestConfig.newBuilder("Tuukka Lister/1.0").build();
-            DbxClientV2 client = new DbxClientV2(config, token.get());
+        if (uploadFile != null) {
+            TextInputDialog dialog = new TextInputDialog("");
+            dialog.setTitle("Upload to Dropbox");
+            dialog.setHeaderText("Enter to your Dropbox account token\nhttps://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/");
+            dialog.setContentText("Token: ");
 
-            try {
-                FullAccount account = client.users().getCurrentAccount();
-                System.out.println(account.getName().getDisplayName());
-                try (InputStream in = new FileInputStream("resources/list.json")) {
-                    FileMetadata metadata = client.files().uploadBuilder("/list.json").uploadAndFinish(in);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+            Optional<String> token = dialog.showAndWait();
+            if (token.isPresent()) {
+                DbxRequestConfig config = DbxRequestConfig.newBuilder("Tuukka Lister/1.0").build();
+                DbxClientV2 client = new DbxClientV2(config, token.get());
+
+
+                try {
+                    FullAccount account = client.users().getCurrentAccount();
+                    System.out.println(account.getName().getDisplayName());
+                    try (InputStream in = new FileInputStream("resources/list.json")) {
+                        FileMetadata metadata = client.files().uploadBuilder("/list.json").uploadAndFinish(in);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (DbxException e) {
                     e.printStackTrace();
                 }
-            } catch (DbxException e) {
-                e.printStackTrace();
             }
         }
     }
