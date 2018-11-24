@@ -271,7 +271,6 @@ class Components {
          JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
         final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());
-        createDoubleDialog();
         DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
         DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
         DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
@@ -320,7 +319,7 @@ class Components {
         return token;
     }
 
-    private Optional<Pair<String, String>> createDoubleDialog() {
+    private Optional<Pair<String, String>> askDropboxInformation() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Dropbox upload");
         dialog.setHeaderText("Tab opened in your browser.\nClick allow and copy the Dropbox code. ");
