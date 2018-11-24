@@ -235,38 +235,6 @@ class Components {
         this.application = app;
     }
 
-    private void uploadToDropBox() {
-        File uploadFile = generateFileChooser();
-
-        if (uploadFile != null) {
-            TextInputDialog dialog = new TextInputDialog("");
-            dialog.setTitle("Upload to Dropbox");
-            dialog.setHeaderText("Enter to your Dropbox account token\nhttps://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/");
-            dialog.setContentText("Token: ");
-
-            Optional<String> token = dialog.showAndWait();
-            if (token.isPresent()) {
-                DbxRequestConfig config = DbxRequestConfig.newBuilder("Tuukka Lister/1.0").build();
-                DbxClientV2 client = new DbxClientV2(config, token.get());
-
-
-                try {
-                    FullAccount account = client.users().getCurrentAccount();
-                    System.out.println(account.getName().getDisplayName());
-                    try (InputStream in = new FileInputStream("resources/list.json")) {
-                        FileMetadata metadata = client.files().uploadBuilder("/list.json").uploadAndFinish(in);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } catch (DbxException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     private void testAuth() {
          JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
@@ -307,17 +275,6 @@ class Components {
                 e.printStackTrace();
             }
         }
-    }
-
-
-    private Optional<String> textInput(String title, String header, String content) {
-        TextInputDialog dialog = new TextInputDialog("");
-        dialog.setTitle(title);
-        dialog.setHeaderText(header);
-        dialog.setContentText(content);
-
-        Optional<String> token = dialog.showAndWait();
-        return token;
     }
 
     private Optional<Pair<String, String>> askDropboxInformation() {
