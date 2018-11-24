@@ -15,7 +15,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -100,13 +102,33 @@ class Components {
         TableView<Product> table = new TableView<>();
         table.setOnMouseClicked(e -> {
             if(e.getClickCount() == 2) {
-                System.out.println("WIDTH : "  + stage.getWidth() + " HEIGHT: " + stage.getHeight());
                 table.getItems().add(new Product("-", 1));
             }
         });
         table.setItems(products);
         table.getColumns().addAll(quantityColumn,nameColumn);
         table.setEditable(true);
+
+        table.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if(event.getCode() == KeyCode.TAB) {
+                TablePosition pos = table.getFocusModel().getFocusedCell();
+                if(pos.getTableColumn().equals(nameColumn)) {
+                    if(pos.getRow() < table.getItems().size() -1) {
+                        table.edit(pos.getRow()+1, quantityColumn);
+                        table.getFocusModel().focus(pos.getRow()+1, quantityColumn);
+                        table.getSelectionModel().select(pos.getRow()+1, quantityColumn);
+                    } else {
+                        table.edit(0, quantityColumn);
+                        table.getFocusModel().focus(0, quantityColumn);
+                        table.getSelectionModel().select(0, quantityColumn);
+                    }
+                } else if(pos.getTableColumn().equals(quantityColumn)) {
+                    table.getFocusModel().focus(pos.getRow(), nameColumn);
+                    table.edit(pos.getRow(), nameColumn);
+                    table.getSelectionModel().select(pos.getRow(), nameColumn);
+                }
+            }
+        });
 
         return table;
     }
@@ -243,9 +265,9 @@ class Components {
                 .build();
         String authorizeUrl = auth.authorize(authRequest);
 
-        application.getHostServices().showDocument(authorizeUrl);
 
         Optional<Pair<String, String>> dBoxInfo = askDropboxInformation();
+        application.getHostServices().showDocument(authorizeUrl);
 
         if(dBoxInfo.isPresent()) {
             String code = dBoxInfo.get().getValue().trim();
@@ -255,11 +277,12 @@ class Components {
             }
 
             saveTableViewAsJson(jsonFileName);
+            System.out.println(jsonFileName);
 
             try {
                 DbxAuthFinish authFinish = auth.finishFromCode(code);
                 DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-                try (InputStream in = new FileInputStream("icons/"+jsonFileName)) {
+                try (InputStream in = new FileInputStream("resources/"+jsonFileName)) {
                     FileMetadata metadata = client.files().uploadBuilder("/"+jsonFileName).uploadAndFinish(in);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
