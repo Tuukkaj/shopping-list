@@ -42,13 +42,7 @@ class Components {
         borderPane.setTop(generateTopMenuBar());
         table = generateCenterTable();
         borderPane.setCenter(table);
-        /*
-        borderPane.setBottom(iFeelLuckyButton);
-        borderPane.setRight(generateRightBorder());
-        borderPane.setCenter(gPane);
-        borderPane.setAlignment(iFeelLuckyButton, Pos.BOTTOM_CENTER);
-        borderPane.setMargin(iFeelLuckyButton, new Insets(12,12,12,12));
-*/
+
         return borderPane;
     }
 
@@ -139,7 +133,7 @@ class Components {
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
         save.setAccelerator(KeyCombination.keyCombination("SHORTCUT+S"));
-        save.setOnAction(actionEvent -> saveTableViewAsJson());
+        save.setOnAction(actionEvent -> saveTableViewAsJson("list.json"));
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
@@ -170,13 +164,17 @@ class Components {
         try {
             array = ((JSONArray) fileData.getComponent("shoppingList"));
             table.getItems().clear();
-            array.getData().forEach(linkedList -> table.getItems().add(new Product(String.valueOf(linkedList.get("product")), Integer.valueOf(String.valueOf(linkedList.get("quantity"))))));
+
+            array.getData().forEach(linkedList -> table.getItems()
+                    .add(new Product(String.valueOf(linkedList.get("product")),
+                            Integer.valueOf(String.valueOf(linkedList.get("quantity"))))));
+
         } catch (InvalidParameterException e) {
             generateNotProperJSONFileWarning();
         }
     }
 
-    private void saveTableViewAsJson() {
+    private File saveTableViewAsJson(String filename) {
         JSONParser parser = new JSONParser();
         JSONFileData data = new JSONFileData();
         JSONArray array = new JSONArray("shoppingList");
@@ -189,8 +187,10 @@ class Components {
                 array.add(itemList);
             }
         });
+        File savedFile = new File("resources/"+filename);
         data.add(array);
-        parser.write(data, new File("resources/list.json"));
+        parser.write(data,savedFile);
+        return savedFile;
     }
 
     private File generateFileChooser() {
@@ -273,8 +273,14 @@ class Components {
                 .withNoRedirect()
                 .build();
         String authorizeUrl = auth.authorize(authRequest);
+
         application.getHostServices().showDocument(authorizeUrl);
-        Optional<String> code = textInput("Upload to Dropbox", "Tab openend in your browser.\nCopy the code and paste it below", "code: ");
+
+        File savedFile = saveTableViewAsJson("TuukkaListerDropbox.json");
+        System.out.println("File saved: " + savedFile.getPath());
+        Optional<String> code = textInput("Upload to Dropbox",
+                "Tab openend in your browser.\nCopy the code and paste it below", "code: ");
+
         if (code.isPresent()) {
             String token = code.get().trim();
             try {
@@ -282,9 +288,22 @@ class Components {
             DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
             FullAccount account = client.users().getCurrentAccount();
             System.out.println(account.getName().getDisplayName());
+
+                try (InputStream in = new FileInputStream("resources/TuukkaListerDropbox.json")) {
+                    FileMetadata metadata = client.files().uploadBuilder("/TuukkaListerDropbox.json").uploadAndFinish(in);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             } catch (DbxException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(savedFile.delete()) {
+            System.out.println("FILE DELETED");
         }
     }
 
