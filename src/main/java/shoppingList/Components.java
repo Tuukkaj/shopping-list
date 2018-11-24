@@ -127,7 +127,12 @@ class Components {
 
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
-        readFile.setOnAction((event -> generateFileChooser()));
+        readFile.setOnAction((event -> {
+            File chosenFile = generateFileChooser();
+            if(chosenFile != null) {
+                readJsonFile(chosenFile);
+            }
+        }));
         readFile.setAccelerator(KeyCombination.keyCombination("SHORTCUT+R"));
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
@@ -186,15 +191,14 @@ class Components {
         parser.write(data, new File("resources/list.json"));
     }
 
-    private void generateFileChooser() {
+    private File generateFileChooser() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open JSON File");
+        fileChooser.setTitle("choose JSON File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JSON files", "*.json"));
         File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile != null) {
-            readJsonFile(selectedFile);
-        }
+
+        return selectedFile;
     }
 
     private void generateAboutDialog() {
