@@ -23,7 +23,6 @@ import java.io.*;
 import java.util.Optional;
 
 public class DropboxUpload {
-    private ObservableList<Product> products;
 
     public void uploadCurrentListToDropbox(Application application, TableView<Product> table) {
         JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
