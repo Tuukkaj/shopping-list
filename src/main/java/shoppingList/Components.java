@@ -48,8 +48,6 @@ class Components {
         borderPane.setCenter(table);
         Button add = generateAddButton();
         Button remove = generateRemoveButton();
-       // add.setAlignment(Pos.CENTER_LEFT);
-       // remove.setAlignment(Pos.CENTER_RIGHT);
         BorderPane innerPane = new BorderPane();
         add.setAlignment(Pos.CENTER_LEFT);
         remove.setAlignment(Pos.CENTER_RIGHT);
@@ -177,14 +175,15 @@ class Components {
         readFile.setOnAction((event -> {
             File chosenFile = generateFileChooser();
             if(chosenFile != null) {
-                readJsonFile(chosenFile);
+                table.getItems().clear();
+                table.getItems().addAll(readJsonFile(chosenFile));
             }
         }));
         readFile.setAccelerator(KeyCombination.keyCombination("SHORTCUT+R"));
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
         save.setAccelerator(KeyCombination.keyCombination("SHORTCUT+S"));
-        save.setOnAction(actionEvent -> saveTableViewAsJson("list.json"));
+        save.setOnAction(actionEvent -> saveTableViewAsJson("list.json", table));
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
@@ -209,23 +208,26 @@ class Components {
         return v;
     }
 
-    private void readJsonFile(File file) {
+    private ObservableList<Product> readJsonFile(File file) {
         JSONFileData fileData = new JSONParser().read(file);
+        ObservableList<Product> products = FXCollections.observableArrayList();
+
         JSONArray array;
         try {
             array = ((JSONArray) fileData.getComponent("shoppingList"));
-            table.getItems().clear();
 
-            array.getData().forEach(linkedList -> table.getItems()
+            array.getData().forEach(linkedList -> products
                     .add(new Product(String.valueOf(linkedList.get("product")),
                             Integer.valueOf(String.valueOf(linkedList.get("quantity"))))));
 
         } catch (InvalidParameterException e) {
             generateNotProperJSONFileWarning();
         }
+
+        return products;
     }
 
-    private File saveTableViewAsJson(String filename) {
+    private File saveTableViewAsJson(String filename, TableView<Product> table) {
         JSONParser parser = new JSONParser();
         JSONFileData data = new JSONFileData();
         JSONArray array = new JSONArray("shoppingList");
