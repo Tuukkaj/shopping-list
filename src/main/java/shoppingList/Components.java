@@ -176,14 +176,14 @@ class Components {
             File chosenFile = generateFileChooser();
             if(chosenFile != null) {
                 table.getItems().clear();
-                table.getItems().addAll(readJsonFile(chosenFile));
+                table.getItems().addAll(new JSONHandler().readJsonFile(chosenFile));
             }
         }));
         readFile.setAccelerator(KeyCombination.keyCombination("SHORTCUT+R"));
         //SAVE FILE
         MenuItem save = new MenuItem("Save File");
         save.setAccelerator(KeyCombination.keyCombination("SHORTCUT+S"));
-        save.setOnAction(actionEvent -> saveTableViewAsJson("list.json", table));
+        save.setOnAction(actionEvent -> new JSONHandler().saveTableViewAsJson("list.json", table));
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
@@ -208,44 +208,6 @@ class Components {
         return v;
     }
 
-    private ObservableList<Product> readJsonFile(File file) {
-        JSONFileData fileData = new JSONParser().read(file);
-        ObservableList<Product> products = FXCollections.observableArrayList();
-
-        JSONArray array;
-        try {
-            array = ((JSONArray) fileData.getComponent("shoppingList"));
-
-            array.getData().forEach(linkedList -> products
-                    .add(new Product(String.valueOf(linkedList.get("product")),
-                            Integer.valueOf(String.valueOf(linkedList.get("quantity"))))));
-
-        } catch (InvalidParameterException e) {
-            generateNotProperJSONFileWarning();
-        }
-
-        return products;
-    }
-
-    private File saveTableViewAsJson(String filename, TableView<Product> table) {
-        JSONParser parser = new JSONParser();
-        JSONFileData data = new JSONFileData();
-        JSONArray array = new JSONArray("shoppingList");
-
-        table.getItems().forEach(product -> {
-            if(!product.getName().equalsIgnoreCase("-")) {
-                ArrayList<JSONItem> itemList = new ArrayList<>();
-                itemList.add(new JSONItem("product", product.getName()));
-                itemList.add(new JSONItem("quantity", product.getQuantity()));
-                array.add(itemList);
-            }
-        });
-        File savedFile = new File("resources/"+filename);
-        data.add(array);
-        parser.write(data,savedFile);
-        return savedFile;
-    }
-
     private File generateFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose JSON File");
@@ -261,14 +223,6 @@ class Components {
         alert.setTitle("Author - Tuukka Juusela");
         alert.setHeaderText("This program is part of school project\nin Tampere University of Applied Sciences.");
         alert.setContentText("Used to save shopping list as a json file.");
-        alert.showAndWait();
-    }
-
-    private void generateNotProperJSONFileWarning() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Problem occurred");
-        alert.setHeaderText("JSON file you tried to read is\nnot supported by Tuukka Lister.");
-        alert.setContentText("Ensure that file you tried to read is made with this program.");
         alert.showAndWait();
     }
 
