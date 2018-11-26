@@ -24,7 +24,7 @@ import java.util.Optional;
 public class DropboxUpload {
     private ObservableList<Product> products;
 
-    private void uploadCurrentListToDropbox(Application application) {
+    public void uploadCurrentListToDropbox(Application application) {
         JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
         final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());

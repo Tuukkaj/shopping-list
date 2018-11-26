@@ -169,7 +169,7 @@ class Components {
         printTable.setOnAction(e -> printTableContents());
         //UPLOAD DROPBOX
         MenuItem uploadItem = new MenuItem("Upload to Dropbox");
-        uploadItem.setOnAction(actionEvent -> uploadCurrentListToDropbox());
+        uploadItem.setOnAction(actionEvent -> new DropboxUpload().uploadCurrentListToDropbox(application));
         uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));
 
         //READ FILE
