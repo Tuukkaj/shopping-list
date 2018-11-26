@@ -81,7 +81,7 @@ public class DropboxUpload {
     private Optional<Pair<String, String>> askDropboxInformation(Application app, String authorizeUrl) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Dropbox upload");
-        dialog.setHeaderText("Tab opened in your browser.\nClick allow and copy the Dropbox code. ");
+        dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the link");
 
         dialog.setGraphic(new ImageView("file:icons/dropbox.png"));
         Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
