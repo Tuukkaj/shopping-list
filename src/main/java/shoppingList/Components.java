@@ -1,39 +1,24 @@
 package shoppingList;
 
-import com.dropbox.core.*;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.FileMetadata;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import javafx.util.StringConverter;
-import jsonParser.JSONComponent.JSONArray;
-import jsonParser.JSONComponent.JSONFileData;
-import jsonParser.JSONComponent.JSONItem;
-import jsonParser.JSONParser;
+
 
 import java.io.*;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Optional;
 
 class Components {
     private TableView<Product> table;
