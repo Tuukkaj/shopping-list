@@ -6,6 +6,7 @@ import com.dropbox.core.v2.files.FileMetadata;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -36,8 +37,7 @@ public class DropboxUpload {
                 .build();
         String authorizeUrl = auth.authorize(authRequest);
 
-        application.getHostServices().showDocument(authorizeUrl);
-        Optional<Pair<String, String>> dBoxInfo = askDropboxInformation();
+        Optional<Pair<String, String>> dBoxInfo = askDropboxInformation(application, authorizeUrl);
 
 
         if(dBoxInfo.isPresent()) {
@@ -78,7 +78,7 @@ public class DropboxUpload {
         alert.showAndWait();
     }
 
-    private Optional<Pair<String, String>> askDropboxInformation() {
+    private Optional<Pair<String, String>> askDropboxInformation(Application app, String authorizeUrl) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Dropbox upload");
         dialog.setHeaderText("Tab opened in your browser.\nClick allow and copy the Dropbox code. ");
@@ -87,7 +87,14 @@ public class DropboxUpload {
         Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
         dialogStage.getIcons().add(new Image("file:icons/dropbox.png"));
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+        ButtonType showLink = new ButtonType("Open Link", ButtonBar.ButtonData.FINISH);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL, showLink);
+        dialog.getDialogPane().addEventFilter(ActionEvent.ACTION, e -> {
+            if(e.getTarget().toString().contains("Open Link")) {
+                e.consume();
+                app.getHostServices().showDocument(authorizeUrl);
+            }
+        });
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
