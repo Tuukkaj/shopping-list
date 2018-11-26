@@ -24,7 +24,7 @@ import java.util.Optional;
 public class DropboxUpload {
     private ObservableList<Product> products;
 
-    public void uploadCurrentListToDropbox(Application application) {
+    public void uploadCurrentListToDropbox(Application application, TableView<Product> table) {
         JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
         final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());
@@ -47,7 +47,7 @@ public class DropboxUpload {
                 jsonFileName += ".json";
             }
 
-            //saveTableViewAsJson(jsonFileName);
+            new JSONHandler().saveTableViewAsJson(jsonFileName, table);
             System.out.println(jsonFileName);
 
             try {
