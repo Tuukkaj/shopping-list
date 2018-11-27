@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,6 +13,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -31,13 +34,21 @@ class Components {
         borderPane.setTop(generateTopMenuBar());
         table = generateCenterTable();
         borderPane.setCenter(table);
-        Button add = generateAddButton();
-        Button remove = generateRemoveButton();
-        BorderPane innerPane = new BorderPane();
-        add.setAlignment(Pos.CENTER_LEFT);
-        remove.setAlignment(Pos.CENTER_RIGHT);
-        innerPane.setLeft(add);
-        innerPane.setRight(remove);
+        HBox hbox = new HBox();
+
+        hbox.getChildren().addAll(generateAddButton(),generateModifyButton(), generateRemoveButton());
+
+        hbox.setSpacing(10);
+        hbox.setPadding(new Insets(5));
+
+
+         BorderPane innerPane = new BorderPane();
+         innerPane.setCenter(hbox);
+         hbox.setAlignment(Pos.BOTTOM_CENTER);
+       // add.setAlignment(Pos.CENTER_LEFT);
+        //remove.setAlignment(Pos.CENTER_RIGHT);
+        //innerPane.setLeft(add);
+        //innerPane.setRight(remove);
         borderPane.setBottom(innerPane);
 
 
@@ -52,9 +63,18 @@ class Components {
     }
 
     private Button generateRemoveButton() {
-         Button b = new Button("Remove selected");
+         Button b = new Button("Remove");
          b.setOnAction(e -> {
              table.getItems().remove(table.getFocusModel().getFocusedCell().getRow());
+         });
+
+         return b;
+    }
+
+    private Button generateModifyButton() {
+         Button b = new Button("Modify");
+         b.setOnAction(event -> {
+             tableViewModify();
          });
 
          return b;
@@ -244,5 +264,11 @@ class Components {
 
     private void tableViewAdd() {
          table.getItems().add(new Product("-",1));
+    }
+
+    private void tableViewModify() {
+        TablePosition pos = table.getFocusModel().getFocusedCell();
+
+        table.edit(pos.getRow(), table.getColumns().get(0));
     }
 }
