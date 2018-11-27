@@ -127,6 +127,7 @@ class Components {
                     break;
                 case DELETE:
                     System.out.println("DELETE");
+                    tableViewDelete();
                     break;
             }
         });
@@ -229,5 +230,10 @@ class Components {
             table.edit(pos.getRow(), nameColumn);
             table.getSelectionModel().select(pos.getRow(), nameColumn);
         }
+    }
+
+    private void tableViewDelete() {
+        int pos = table.getSelectionModel().getSelectedIndex();
+        table.getItems().remove(pos);
     }
 }
