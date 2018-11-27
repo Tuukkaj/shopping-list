@@ -18,7 +18,7 @@ public class ShoppingListMain extends Application {
         Components components = new Components(stage, this);
         Scene content = new Scene(components.generateBorderPanel(), 320,480);
         stage.setScene(content);
-        stage.initStyle(StageStyle.UNIFIED);
+        //stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
         stage.getIcons().add(new Image("file:icons/shoppingListIcon.png"));
         stage.setTitle("Tuukka Lister");

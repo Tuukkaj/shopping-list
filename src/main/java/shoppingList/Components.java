@@ -120,23 +120,14 @@ class Components {
         table.setEditable(true);
 
         table.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if(event.getCode() == KeyCode.TAB) {
-                TablePosition pos = table.getFocusModel().getFocusedCell();
-                if(pos.getTableColumn().equals(nameColumn)) {
-                    if(pos.getRow() < table.getItems().size() -1) {
-                        table.edit(pos.getRow()+1, quantityColumn);
-                        table.getFocusModel().focus(pos.getRow()+1, quantityColumn);
-                        table.getSelectionModel().select(pos.getRow()+1, quantityColumn);
-                    } else {
-                        table.edit(0, quantityColumn);
-                        table.getFocusModel().focus(0, quantityColumn);
-                        table.getSelectionModel().select(0, quantityColumn);
-                    }
-                } else if(pos.getTableColumn().equals(quantityColumn)) {
-                    table.getFocusModel().focus(pos.getRow(), nameColumn);
-                    table.edit(pos.getRow(), nameColumn);
-                    table.getSelectionModel().select(pos.getRow(), nameColumn);
-                }
+            switch (event.getCode()) {
+                case TAB:
+                    System.out.println("TABI");
+                    tableViewTab(nameColumn, quantityColumn);
+                    break;
+                case DELETE:
+                    System.out.println("DELETE");
+                    break;
             }
         });
 
@@ -219,5 +210,24 @@ class Components {
     Components(Stage stage, Application app) {
         this.stage = stage;
         this.application = app;
+    }
+
+    private void tableViewTab(TableColumn nameColumn, TableColumn quantityColumn) {
+        TablePosition pos = table.getFocusModel().getFocusedCell();
+        if(pos.getTableColumn().equals(nameColumn)) {
+            if(pos.getRow() < table.getItems().size() -1) {
+                table.edit(pos.getRow()+1, quantityColumn);
+                table.getFocusModel().focus(pos.getRow()+1, quantityColumn);
+                table.getSelectionModel().select(pos.getRow()+1, quantityColumn);
+            } else {
+                table.edit(0, quantityColumn);
+                table.getFocusModel().focus(0, quantityColumn);
+                table.getSelectionModel().select(0, quantityColumn);
+            }
+        } else if(pos.getTableColumn().equals(quantityColumn)) {
+            table.getFocusModel().focus(pos.getRow(), nameColumn);
+            table.edit(pos.getRow(), nameColumn);
+            table.getSelectionModel().select(pos.getRow(), nameColumn);
+        }
     }
 }
