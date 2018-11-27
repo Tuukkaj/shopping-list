@@ -46,7 +46,7 @@ class Components {
 
     private Button generateAddButton() {
         Button b = new Button("Add");
-        b.setOnAction(e -> table.getItems().add(new Product("-", 1)));
+        b.setOnAction(e -> tableViewAdd());
 
         return b;
     }
@@ -128,6 +128,10 @@ class Components {
                 case DELETE:
                     System.out.println("DELETE");
                     tableViewDelete();
+                    break;
+                case INSERT:
+                    System.out.println("INSERT");
+                    tableViewAdd();
                     break;
             }
         });
@@ -235,5 +239,9 @@ class Components {
     private void tableViewDelete() {
         int pos = table.getSelectionModel().getSelectedIndex();
         table.getItems().remove(pos);
+    }
+
+    private void tableViewAdd() {
+         table.getItems().add(new Product("-",1));
     }
 }
