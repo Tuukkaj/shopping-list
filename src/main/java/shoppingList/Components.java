@@ -97,7 +97,8 @@ class Components {
 
         //NAME COLUMN
         TableColumn<Product, String> nameColumn = new TableColumn<>("Product");
-        nameColumn.setMinWidth(260);
+        nameColumn.setMinWidth(240);
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit(cellEdit -> {
