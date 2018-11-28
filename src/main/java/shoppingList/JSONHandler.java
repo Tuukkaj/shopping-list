@@ -52,6 +52,24 @@ public class JSONHandler {
         return savedFile;
     }
 
+    void saveAsJSON(File file, TableView<Product> table) {
+        JSONParser parser = new JSONParser();
+        JSONFileData data = new JSONFileData();
+        JSONArray array = new JSONArray("shoppingList");
+
+        table.getItems().forEach(product -> {
+            if(!product.getName().equalsIgnoreCase("-")) {
+                ArrayList<JSONItem> itemList = new ArrayList<>();
+                itemList.add(new JSONItem("product", product.getName()));
+                itemList.add(new JSONItem("quantity", product.getQuantity()));
+                array.add(itemList);
+            }
+        });
+
+        data.add(array);
+        parser.write(data,file);
+    }
+
     private void generateNotProperJSONFileWarning() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Problem occurred");
