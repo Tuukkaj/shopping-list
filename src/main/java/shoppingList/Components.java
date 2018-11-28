@@ -269,6 +269,10 @@ class Components {
     private void tableViewModify() {
         TablePosition pos = table.getFocusModel().getFocusedCell();
 
-        table.edit(pos.getRow(), table.getColumns().get(0));
+        if(table.getEditingCell() != null && table.getEditingCell().getColumn() == 0) {
+            table.edit(pos.getRow(), table.getColumns().get(1));
+        } else {
+            table.edit(pos.getRow(), table.getColumns().get(0));
+        }
     }
 }
