@@ -170,7 +170,7 @@ class Components {
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
         readFile.setOnAction((event -> {
-            File chosenFile = generateFileChooser();
+            File chosenFile = generateFileChooserRead();
             if(chosenFile != null) {
                 table.getItems().clear();
                 table.getItems().addAll(new JSONHandler().readJsonFile(chosenFile));
@@ -209,7 +209,7 @@ class Components {
         return v;
     }
 
-    private File generateFileChooser() {
+    private File generateFileChooserRead() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose JSON File");
         fileChooser.getExtensionFilters().addAll(
