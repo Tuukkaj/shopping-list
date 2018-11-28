@@ -191,7 +191,7 @@ class Components {
         //HELP--
         Menu help = new Menu("Help");
         MenuItem helpItem = new MenuItem("Help");
-        //helpItem.setOnAction(actionEvent -> generateAboutDialog());
+        helpItem.setOnAction(actionEvent -> generateHelpDialog());
         MenuItem aboutItem = new MenuItem("About Shopping list App");
         aboutItem.setOnAction(actionEvent -> generateAboutDialog());
         help.getItems().addAll(helpItem,aboutItem);
@@ -214,6 +214,15 @@ class Components {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         return selectedFile;
+    }
+
+    private void generateHelpDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Help");
+        alert.setHeaderText(null);
+        alert.setContentText("Modifying - You can modify cells by double clinking them\n" +
+                "Adding - You can add new row by triple clicking");
+        alert.showAndWait();
     }
 
     private void generateAboutDialog() {
