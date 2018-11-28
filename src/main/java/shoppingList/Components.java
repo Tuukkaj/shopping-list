@@ -184,7 +184,7 @@ class Components {
         //SAVE FILE AS
         MenuItem saveAs = new MenuItem("Save As");
         saveAs.setAccelerator(KeyCombination.keyCombination("SHORTCUT+SHIFT+S"));
-        saveAs.setOnAction(actionEvent -> System.out.println("SAVE AS"));
+        saveAs.setOnAction(actionEvent -> new JSONHandler().saveAsJSON(generateFileChooserSave(), table));
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
