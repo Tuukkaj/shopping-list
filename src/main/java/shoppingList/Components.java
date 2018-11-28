@@ -214,9 +214,7 @@ class Components {
         fileChooser.setTitle("choose JSON File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JSON files", "*.json"));
-        File selectedFile = fileChooser.showOpenDialog(stage);
-
-        return selectedFile;
+        return fileChooser.showOpenDialog(stage);
     }
 
     private File generateFileChooserSave() {
@@ -224,9 +222,7 @@ class Components {
         fileChooser.setTitle("choose JSON File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JSON files", "*.json"));
-        File selectedFile = fileChooser.showSaveDialog(stage);
-
-        return selectedFile;
+        return fileChooser.showSaveDialog(stage);
     }
 
 
