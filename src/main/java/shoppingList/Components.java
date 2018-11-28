@@ -183,10 +183,14 @@ class Components {
         MenuItem save = new MenuItem("Save File");
         save.setAccelerator(KeyCombination.keyCombination("SHORTCUT+S"));
         save.setOnAction(actionEvent -> new JSONHandler().saveTableViewAsJson("list.json", table));
+        //SAVE FILE AS
+        MenuItem saveAs = new MenuItem("Save As");
+        saveAs.setAccelerator(KeyCombination.keyCombination("SHORTCUT+SHIFT+S"));
+        saveAs.setOnAction(actionEvent -> System.out.println("SAVE AS"));
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
-        file.getItems().addAll(printTable, uploadItem, readFile, save, exitItem);
+        file.getItems().addAll(printTable, uploadItem, readFile, saveAs, save, exitItem);
 
 
         //HELP--
