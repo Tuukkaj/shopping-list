@@ -13,7 +13,7 @@ import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-public class JSONHandler {
+class JSONHandler {
      ObservableList<Product> readJsonFile(File file) {
         JSONFileData fileData = new JSONParser().read(file);
         ObservableList<Product> products = FXCollections.observableArrayList();
