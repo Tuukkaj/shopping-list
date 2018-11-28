@@ -41,14 +41,10 @@ class Components {
         hbox.setSpacing(10);
         hbox.setPadding(new Insets(5));
 
+        BorderPane innerPane = new BorderPane();
+        innerPane.setCenter(hbox);
+        hbox.setAlignment(Pos.BOTTOM_CENTER);
 
-         BorderPane innerPane = new BorderPane();
-         innerPane.setCenter(hbox);
-         hbox.setAlignment(Pos.BOTTOM_CENTER);
-       // add.setAlignment(Pos.CENTER_LEFT);
-        //remove.setAlignment(Pos.CENTER_RIGHT);
-        //innerPane.setLeft(add);
-        //innerPane.setRight(remove);
         borderPane.setBottom(innerPane);
 
 
@@ -132,7 +128,7 @@ class Components {
         //TABLE Creation
         TableView<Product> table = new TableView<>();
         table.setOnMouseClicked(e -> {
-            if(e.getClickCount() == 2) {
+            if(e.getClickCount() == 3) {
                 table.getItems().add(new Product("-", 1));
             }
         });
