@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -222,6 +223,9 @@ class Components {
         alert.setHeaderText(null);
         alert.setContentText("Modifying - You can modify cells by double clinking them\n" +
                 "Adding - You can add new row by triple clicking");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:icons/shoppingListIcon.png"));
+
         alert.showAndWait();
     }
 
@@ -230,6 +234,9 @@ class Components {
         alert.setTitle("Author - Tuukka Juusela");
         alert.setHeaderText("This program is part of school project\nin Tampere University of Applied Sciences.");
         alert.setContentText("Used to save shopping list as a json file.");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:icons/shoppingListIcon.png"));
+
         alert.showAndWait();
     }
 
