@@ -22,8 +22,22 @@ import jsonParser.JSONParser;
 import java.io.*;
 import java.util.Optional;
 
+/**
+ * Handles everything related to Dropbox.
+ *
+ * @author Tuukka Juusela
+ * @version 2018.0212
+ * @since 1.8
+ */
 public class DropboxUpload {
-
+    /**
+     * Asks for users authorization to upload to Dropbox using askDropboxInformation().
+     *
+     * Asks for users authorization to upload to Dropbox using askDropboxInformation(). Saves file in users dropbox
+     * if user grants access to his/her Dropbox.
+     * @param application the main JavaFx class. Used to open Dropbox authorization to browser.
+     * @param table TableView of products.
+     */
     public void uploadCurrentListToDropbox(Application application, TableView<Product> table) {
         JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
@@ -66,6 +80,9 @@ public class DropboxUpload {
         }
     }
 
+    /**
+     * Generates dialog window about something going wrong in Upload.
+     */
     private void generateUploadFailedDialog() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
@@ -77,6 +94,15 @@ public class DropboxUpload {
         alert.showAndWait();
     }
 
+    /**
+     * Generates dialog window asking for users authorization and file name.
+     *
+     * Generates Dialog window. Has button for opening Dropbox authorization. Has two fields for text. One for
+     * name of the file which is about to be saved and one for Dropbox authorization url.
+     * @param app the main JavaFx class. Used to open Dropbox authorization to browser.
+     * @param authorizeUrl URL to Dropbox authorization.
+     * @return Pair of Strings. First String is files name and second for Dropbox authorization code.
+     */
     private Optional<Pair<String, String>> askDropboxInformation(Application app, String authorizeUrl) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Dropbox upload");
