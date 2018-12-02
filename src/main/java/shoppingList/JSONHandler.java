@@ -13,7 +13,20 @@ import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
+/**
+ * Handles everything related to JSON.
+ *
+ * @author Tuukka Juusela
+ * @version 2018.0212
+ * @since 1.8
+ */
 class JSONHandler {
+    /**
+     * Reads json file and returns observableList of products. If exception is caused by something generates warning
+     * dialog.
+     * @param file to read.
+     * @return ObservableList of products from JSON file.
+     */
      ObservableList<Product> readJsonFile(File file) {
         JSONFileData fileData = new JSONParser().read(file);
         ObservableList<Product> products = FXCollections.observableArrayList();
@@ -33,6 +46,12 @@ class JSONHandler {
         return products;
     }
 
+    /**
+     * Saves tableView to JSONFile.
+     * @param filename name of the file json file to be saved.
+     * @param table TableView of products to save.
+     * @return File where tableView was saved.
+     */
      File saveTableViewAsJson(String filename, TableView<Product> table) {
         JSONParser parser = new JSONParser();
         JSONFileData data = new JSONFileData();
@@ -52,6 +71,11 @@ class JSONHandler {
         return savedFile;
     }
 
+    /**
+     * Saves TableView to given JSONFile.
+     * @param file to save TableView.
+     * @param table TableView to save.
+     */
     void saveAsJSON(File file, TableView<Product> table) {
         JSONParser parser = new JSONParser();
         JSONFileData data = new JSONFileData();
@@ -70,6 +94,9 @@ class JSONHandler {
         parser.write(data,file);
     }
 
+    /**
+     * Generates Dialog window warning about error occouring in reading process.
+     */
     private void generateNotProperJSONFileWarning() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Problem occurred");
