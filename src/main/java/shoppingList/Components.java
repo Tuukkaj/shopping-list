@@ -22,11 +22,31 @@ import javafx.util.StringConverter;
 
 import java.io.*;
 
+/**
+ * Main functionality of JavaFx. Holds component creation and functionality of JavaFx components.
+ *
+ * @author Tuukka Juusela
+ * @version 2018.0212
+ * @since 1.8
+ */
 class Components {
+    /**
+     * TableView of the JavaFx. User uses this to list his/hers products.
+     */
     private TableView<Product> table;
+    /**
+     * Stage in which components are.
+     */
     private Stage stage;
+    /**
+     * the main JavaFx class.
+     */
     private Application application;
 
+    /**
+     * Generates BorderPane for ShoppingListMain's scene.
+     * @return ready BorderPane which has all necessary components.
+     */
      BorderPane generateBorderPanel() {
         BorderPane borderPane = new BorderPane();
 
@@ -50,6 +70,10 @@ class Components {
         return borderPane;
     }
 
+    /**
+     * Generates Add button. Has OnActionListener for Adding new row to TableView.
+     * @return Add button.
+     */
     private Button generateAddButton() {
         Button b = new Button("Add");
         b.setOnAction(e -> tableViewAdd());
@@ -57,6 +81,10 @@ class Components {
         return b;
     }
 
+    /**
+     * Generates Remove button. Has OnActionListener for removing focused row in TableView.
+     * @return Remove button.
+     */
     private Button generateRemoveButton() {
          Button b = new Button("Remove");
          b.setOnAction(e -> {
@@ -66,6 +94,10 @@ class Components {
          return b;
     }
 
+    /**
+     * Generates Modify button. Has OnActionListener for modifying focused row in TableView.
+     * @return Modify button.
+     */
     private Button generateModifyButton() {
          Button b = new Button("Modify");
          b.setOnAction(event -> {
@@ -75,6 +107,10 @@ class Components {
          return b;
     }
 
+    /**
+     * Generates observableList for Components TableView. Creates one ready example item to observableList.
+     * @return observableList with one example item in it.
+     */
     private ObservableList<Product> createObservableList() {
          ObservableList<Product> products = FXCollections.observableArrayList();
          products.add(new Product("Example item",1));
@@ -82,6 +118,15 @@ class Components {
          return products;
     }
 
+    /**
+     * Generates TableView for generateBorderPanel().
+     *
+     * TableView has observableList of products for the application. TableView has alot of functionality added to it.
+     * Rows can be cycled with tabulator, rows can
+     * be modified by double clicking them, new row can be inserted with triple click. Pressing delete removes
+     * selected row. Pressing Insert adds new to end.
+     * @return
+     */
     private TableView<Product> generateCenterTable() {
         ObservableList<Product> products = createObservableList();
         //QUALITY COLUMN
@@ -155,6 +200,24 @@ class Components {
         return table;
     }
 
+    /**
+     * Generates VBox which holds menu for generateBorderPanel().
+     *
+     * Vbox has to Menus. File and Help.
+     *
+     * File contains Print Table, Upload Dropbox, Read File, Save As, Save File and Exit.
+     * Print table prints tableView's content to console. Will be removed in final releases.
+     * Read File reads .json file and turns file's content to TableView.
+     * Save as asks users where to TableView and saves it.
+     * Save File saves file to current location with name "list.json"
+     * Exit exits the Program.
+     *
+     * Help contains Help and about Shopping list App.
+     * Help opens dialog window which contains shortcuts for the and tricks for using the program.
+     * About Shopping List App opens dialog window which has information about the program.
+     *
+     * @return Ready made Menubar Vbox.
+     */
     private VBox generateTopMenuBar() {
         VBox v = new VBox();
         //FILE---
@@ -209,6 +272,10 @@ class Components {
         return v;
     }
 
+    /**
+     * Generates FileChooser to read json file.
+     * @return file user chose to read.
+     */
     private File generateFileChooserRead() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose JSON File");
@@ -217,6 +284,10 @@ class Components {
         return fileChooser.showOpenDialog(stage);
     }
 
+    /**
+     * Generates FileChooser to save json file.
+     * @return file user chose to save json file to.
+     */
     private File generateFileChooserSave() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose JSON File");
@@ -225,7 +296,9 @@ class Components {
         return fileChooser.showSaveDialog(stage);
     }
 
-
+    /**
+     * Generates Help dialog. Dialog holds information to help user use the program.
+     */
     private void generateHelpDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Help");
@@ -238,6 +311,9 @@ class Components {
         alert.showAndWait();
     }
 
+    /**
+     * Generates about dialog. Dialog holds information about the program.
+     */
     private void generateAboutDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Author - Tuukka Juusela");
@@ -250,15 +326,31 @@ class Components {
     }
 
     //Remove in final release.
+
+    /**
+     * Prints tableViews content to console.
+     */
     private void printTableContents() {
         table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
     }
 
+    /**
+     * Constructor. Sets stage and application class variables.
+     * @param stage current javafx stage.
+     * @param app current javafx application.
+     */
     Components(Stage stage, Application app) {
         this.stage = stage;
         this.application = app;
     }
 
+    /**
+     * Used to go through the TableView.
+     *
+     * When this is method is called it goes to next modifiable cell and starts modifying it.
+     * @param nameColumn Currently selected nameColumn.
+     * @param quantityColumn Currently selected quantityColumn.
+     */
     private void tableViewTab(TableColumn nameColumn, TableColumn quantityColumn) {
         TablePosition pos = table.getFocusModel().getFocusedCell();
         if(pos.getTableColumn().equals(nameColumn)) {
@@ -278,15 +370,24 @@ class Components {
         }
     }
 
+    /**
+     * Removes currently selected row from tableView.
+     */
     private void tableViewDelete() {
         int pos = table.getSelectionModel().getSelectedIndex();
         table.getItems().remove(pos);
     }
 
+    /**
+     * Adds new product to TableView.
+     */
     private void tableViewAdd() {
          table.getItems().add(new Product("-",1));
     }
 
+    /**
+     * Modifies tableViews row.
+     */
     private void tableViewModify() {
         TablePosition pos = table.getFocusModel().getFocusedCell();
 
