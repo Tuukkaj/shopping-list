@@ -15,7 +15,7 @@
     <orderEntry type="module-library">
       <library name="Maven: fi.tamk.tuukka:TuukkaJSONParser:1.2">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/resources/JSONParserTuukka.jar!/" />
+          <root url="jar://$MODULE_DIR$/../JSONParserTuukka.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

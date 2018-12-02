@@ -19,7 +19,7 @@
             <artifactId>TuukkaJSONParser</artifactId>
             <version>1.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/resources/JSONParserTuukka.jar</systemPath>
+            <systemPath>C:/Users/Tuukka/IdeaProjects/JSONParserTuukka.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.dropbox.core</groupId>
