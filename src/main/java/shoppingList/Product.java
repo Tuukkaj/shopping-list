@@ -7,7 +7,7 @@ package shoppingList;
  * @version 2018.0212
  * @since 1.8
  */
-public class Product {
+class Product {
     /**
      * Quantity of product in Components TableView.
      */
@@ -22,7 +22,7 @@ public class Product {
      * @param name of the product.
      * @param quantity of the product.
      */
-    public Product(String name, int quantity) {
+    Product(String name, int quantity) {
         setName(name);
         setQuantity(quantity);
     }
@@ -31,7 +31,7 @@ public class Product {
      * Gets products quantity.
      * @return quantity of product.
      */
-    public int getQuantity() {
+    int getQuantity() {
         return quantity;
     }
 
@@ -39,7 +39,7 @@ public class Product {
      * Sets quantity of the product.
      * @param quantity of the product.
      */
-    public void setQuantity(int quantity) {
+    void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -47,7 +47,7 @@ public class Product {
      * Gets products name.
      * @return name of product.
      */
-    public String getName() {
+    String getName() {
         return name;
     }
 
@@ -55,7 +55,7 @@ public class Product {
      * Sets name of the product.
      * @param name of the product.
      */
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 }
