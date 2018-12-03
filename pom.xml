@@ -19,7 +19,7 @@
             <artifactId>TuukkaJSONParser</artifactId>
             <version>1.2</version>
             <scope>system</scope>
-            <systemPath>C:/Users/Tuukka/IdeaProjects/JSONParserTuukka.jar</systemPath>
+            <systemPath>${maven.jsonParser.Path}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.dropbox.core</groupId>
@@ -32,6 +32,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.javadoc.version>3.0.1</maven.javadoc.version>
         <maven.compiler.mainClass>shoppingList.ShoppingListMain</maven.compiler.mainClass>
+        <maven.jsonParser.Path>C:/Users/Tuukka/IdeaProjects/JSONParserTuukka.jar</maven.jsonParser.Path>
         <!--<documentation>${project.parent.basedir}/../..</documentation>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
