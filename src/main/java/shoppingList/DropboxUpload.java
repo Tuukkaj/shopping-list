@@ -15,9 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import jsonParser.JSONComponent.JSONFileData;
-import jsonParser.JSONComponent.JSONItem;
-import jsonParser.JSONParser;
 
 import java.io.*;
 import java.util.Optional;
@@ -39,44 +36,44 @@ public class DropboxUpload {
      * @param table TableView of products.
      */
     public void uploadCurrentListToDropbox(Application application, TableView<Product> table) {
-        JSONFileData authJson = new JSONParser().read(new File(getClass().getResource("auth.json").getPath()));
-        final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
-        final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());
-        DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
-        DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
-        DbxWebAuth auth = new DbxWebAuth(requestConfig, appInfo);
-        DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
-                .withNoRedirect()
-                .build();
-        String authorizeUrl = auth.authorize(authRequest);
+        try {
+            DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
+            DbxWebAuth auth = new DbxWebAuth(requestConfig, DbxAppInfo.Reader.readFully(getClass().getResourceAsStream("auth.json")));
+            DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
+                    .withNoRedirect()
+                    .build();
+            String authorizeUrl = auth.authorize(authRequest);
 
-        Optional<Pair<String, String>> dBoxInfo = askDropboxInformation(application, authorizeUrl);
+            Optional<Pair<String, String>> dBoxInfo = askDropboxInformation(application, authorizeUrl);
 
 
-        if(dBoxInfo.isPresent()) {
-            String code = dBoxInfo.get().getValue().trim();
-            String jsonFileName = dBoxInfo.get().getKey();
-            if(!jsonFileName.endsWith(".json")) {
-                jsonFileName += ".json";
-            }
+            if (dBoxInfo.isPresent()) {
+                String code = dBoxInfo.get().getValue().trim();
+                String jsonFileName = dBoxInfo.get().getKey();
+                if (!jsonFileName.endsWith(".json")) {
+                    jsonFileName += ".json";
+                }
 
-            new JSONHandler().saveTableViewAsJson(jsonFileName, table);
-            System.out.println(jsonFileName);
+                new JSONHandler().saveTableViewAsJson(jsonFileName, table);
+                System.out.println(jsonFileName);
 
-            try {
-                DbxAuthFinish authFinish = auth.finishFromCode(code);
-                DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-                try (InputStream in = new FileInputStream(jsonFileName)) {
-                    FileMetadata metadata = client.files().uploadBuilder("/"+jsonFileName).uploadAndFinish(in);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                try {
+                    DbxAuthFinish authFinish = auth.finishFromCode(code);
+                    DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
+                    try (InputStream in = new FileInputStream(jsonFileName)) {
+                        FileMetadata metadata = client.files().uploadBuilder("/" + jsonFileName).uploadAndFinish(in);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (DbxException e) {
+                    generateUploadFailedDialog();
                     e.printStackTrace();
                 }
-            } catch (DbxException e) {
-                generateUploadFailedDialog();
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
