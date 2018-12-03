@@ -306,7 +306,7 @@ class Components {
         alert.setContentText("Modifying - You can modify cells by double clinking them\n" +
                 "Adding - You can add new row by triple clicking");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("file:icons/shoppingListIcon.png"));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("icons/shoppingListIcon.png")));
 
         alert.showAndWait();
     }
@@ -320,7 +320,7 @@ class Components {
         alert.setHeaderText("This program is part of school project\nin Tampere University of Applied Sciences.");
         alert.setContentText("Used to save shopping list as a json file.");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("file:icons/shoppingListIcon.png"));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("icons/shoppingListIcon.png")));
 
         alert.showAndWait();
     }

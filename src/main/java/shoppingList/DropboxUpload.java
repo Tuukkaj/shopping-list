@@ -39,7 +39,7 @@ public class DropboxUpload {
      * @param table TableView of products.
      */
     public void uploadCurrentListToDropbox(Application application, TableView<Product> table) {
-        JSONFileData authJson = new JSONParser().read(new File("resources/auth.json"));
+        JSONFileData authJson = new JSONParser().read(new File(getClass().getResource("auth.json").getPath()));
         final String APP_KEY = String.valueOf(((JSONItem)authJson.getComponent("key")).getData());
         final String APP_SECRET = String.valueOf(((JSONItem)authJson.getComponent("secret")).getData());
         DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
@@ -66,7 +66,7 @@ public class DropboxUpload {
             try {
                 DbxAuthFinish authFinish = auth.finishFromCode(code);
                 DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-                try (InputStream in = new FileInputStream("resources/"+jsonFileName)) {
+                try (InputStream in = new FileInputStream(jsonFileName)) {
                     FileMetadata metadata = client.files().uploadBuilder("/"+jsonFileName).uploadAndFinish(in);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -108,9 +108,9 @@ public class DropboxUpload {
         dialog.setTitle("Dropbox upload");
         dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the link");
 
-        dialog.setGraphic(new ImageView("file:icons/dropbox.png"));
+        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
         Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        dialogStage.getIcons().add(new Image("file:icons/dropbox.png"));
+        dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         ButtonType showLink = new ButtonType("Open Link", ButtonBar.ButtonData.FINISH);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL, showLink);

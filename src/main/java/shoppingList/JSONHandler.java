@@ -65,7 +65,7 @@ class JSONHandler {
                 array.add(itemList);
             }
         });
-        File savedFile = new File("resources/"+filename);
+        File savedFile = new File(filename);
         data.add(array);
         parser.write(data,savedFile);
         return savedFile;

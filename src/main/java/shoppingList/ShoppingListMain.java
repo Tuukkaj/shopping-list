@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * Main class of the program. Holds methods for reading and writing JSON files. Also holds methods for creation of
@@ -35,7 +34,7 @@ public class ShoppingListMain extends Application {
         stage.setScene(content);
         //stage.initStyle(StageStyle.UNIFIED);
         stage.centerOnScreen();
-        stage.getIcons().add(new Image("file:icons/shoppingListIcon.png"));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("icons/shoppingListIcon.png")));
         stage.setTitle("Tuukka Lister");
         stage.show();
     }
