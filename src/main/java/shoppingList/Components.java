@@ -125,7 +125,7 @@ class Components {
      * Rows can be cycled with tabulator, rows can
      * be modified by double clicking them, new row can be inserted with triple click. Pressing delete removes
      * selected row. Pressing Insert adds new to end.
-     * @return
+     * @return generated tableView.
      */
     private TableView<Product> generateCenterTable() {
         ObservableList<Product> products = createObservableList();
