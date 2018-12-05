@@ -19,11 +19,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 
 public class DropboxDownload {
@@ -46,7 +41,7 @@ public class DropboxDownload {
                 try {
                     DbxAuthFinish authFinish = auth.finishFromCode(code.get());
                     DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-                    generateFilePicker(getFilesDropbox(client));
+                    System.out.println(generateFilePicker(getFilesDropbox(client)));
                 } catch (DbxException e) {
                     e.printStackTrace();
                 }
@@ -121,21 +116,30 @@ public class DropboxDownload {
         return result;
     }
 
-    private void generateFilePicker(ObservableList<FileItem> files) {
+    private Optional<String> generateFilePicker(ObservableList<FileItem> files) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
         ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons()
                 .add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
         dialog.setTitle("Choose file to download");
-        VBox tableBox = generateTable(files);
+        TableView<FileItem> tableBox = generateTable(files);
         dialog.getDialogPane().setContent(tableBox);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
-        dialog.showAndWait();
+        ButtonType chooseButton = new ButtonType("Choose", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, chooseButton);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == chooseButton) {
+                return tableBox.getItems().get(tableBox.getSelectionModel().getSelectedIndex()).getName();
+            }
+            return null;
+        });
+
+        Optional<String> result = dialog.showAndWait();
+
+        return result;
     }
 
-    private VBox generateTable(ObservableList<FileItem> files) {
-        VBox tableBox = new VBox();
-
+    private TableView<FileItem> generateTable(ObservableList<FileItem> files) {
         TableView<FileItem> tableView = new TableView<>();
 
         TableColumn<FileItem, String> fileColumn = new TableColumn<>("File");
@@ -144,8 +148,8 @@ public class DropboxDownload {
         fileColumn.setPrefWidth(200);
         tableView.getColumns().addAll(fileColumn);
         tableView.setItems(files);
-        tableBox.getChildren().addAll(tableView);
-        return tableBox;
+
+        return tableView;
     }
 
     public class FileItem {
