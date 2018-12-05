@@ -304,9 +304,13 @@ class Components {
     private void generateHelpDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Help");
-        alert.setHeaderText(null);
-        alert.setContentText("Modifying - You can modify cells by double clinking them\n" +
-                "Adding - You can add new row by triple clicking");
+        alert.setHeaderText("Tips:\n" +
+                "Use Add, Modify and Delete buttons to alter the list\n" +
+                "Save file saves file at current location of the program." +
+                "");
+        alert.setContentText("Mouse tips: \n" +
+                "Modifying - You can modify cells by double clinking them\n" +
+                "Adding - You can add new row by triple clicking empty cell");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("icons/shoppingListIcon.png")));
 
