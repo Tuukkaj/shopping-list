@@ -260,7 +260,7 @@ class Components {
         Menu help = new Menu("Help");
         MenuItem helpItem = new MenuItem("Help");
         helpItem.setOnAction(actionEvent -> generateHelpDialog());
-        MenuItem aboutItem = new MenuItem("About Shopping list App");
+        MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(actionEvent -> generateAboutDialog());
         help.getItems().addAll(helpItem,aboutItem);
 
