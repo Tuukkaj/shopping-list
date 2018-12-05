@@ -257,8 +257,8 @@ class Components {
 
         //DROPBOX---
         Menu dropBoxMenu = new Menu("Dropbox");
-        MenuItem importItem = new MenuItem("Download file from Dropbox");
-        MenuItem exportItem = new MenuItem("Upload file to Dropbox");
+        MenuItem importItem = new MenuItem("Download from Dropbox");
+        MenuItem exportItem = new MenuItem("Upload to Dropbox");
         dropBoxMenu.getItems().addAll(importItem,exportItem);
 
         //HELP--
