@@ -197,6 +197,8 @@ class Components {
             }
         });
 
+        stage.widthProperty().addListener(e -> updateTableColumnWidth());
+
         return table;
     }
 
@@ -402,7 +404,8 @@ class Components {
      *
      */
     void updateTableColumnWidth() {
-        table.getColumns().get(0).setMinWidth(table.getWidth()*0.2f);
-        table.getColumns().get(1).setMinWidth(table.getWidth()*0.78f);
+        table.setMaxWidth(stage.getWidth());
+        table.getColumns().get(0).setPrefWidth(table.getWidth()*0.2f);
+        table.getColumns().get(1).setPrefWidth(table.getWidth()*0.78f);
     }
 }
