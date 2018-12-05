@@ -224,13 +224,7 @@ class Components {
         VBox v = new VBox();
         //FILE---
         Menu file = new Menu("File");
-        //PRINT TABLE
-        MenuItem printTable = new MenuItem("Print Table");
-        printTable.setOnAction(e -> printTableContents());
-        //UPLOAD DROPBOX
-        MenuItem uploadItem = new MenuItem("Upload to Dropbox");
-        uploadItem.setOnAction(actionEvent -> new DropboxUpload().uploadCurrentListToDropbox(application, table));
-        uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));
+
 
         //READ FILE
         MenuItem readFile = new MenuItem("Read File");
@@ -253,13 +247,15 @@ class Components {
         //Exit
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction((e) -> Platform.exit());
-        file.getItems().addAll(printTable, uploadItem, readFile, saveAs, save, exitItem);
+        file.getItems().addAll(readFile, saveAs, save, exitItem);
 
         //DROPBOX---
         Menu dropBoxMenu = new Menu("Dropbox");
         MenuItem importItem = new MenuItem("Download from Dropbox");
-        MenuItem exportItem = new MenuItem("Upload to Dropbox");
-        dropBoxMenu.getItems().addAll(importItem,exportItem);
+        MenuItem uploadItem = new MenuItem("Upload to Dropbox");
+        uploadItem.setOnAction(actionEvent -> new DropboxUpload().uploadCurrentListToDropbox(application, table));
+        uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));
+        dropBoxMenu.getItems().addAll(importItem,uploadItem);
 
         //HELP--
         Menu help = new Menu("Help");
