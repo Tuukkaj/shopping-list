@@ -27,7 +27,7 @@ import java.util.Optional;
 public class DropboxDownload {
     Application app;
 
-    void download(Application app) {
+    void download(Application app, TableView<Product> table) {
         try {
             this.app = app;
             DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
@@ -46,7 +46,11 @@ public class DropboxDownload {
                     DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
                     Optional<String> fileChosen = generateFilePicker(getFilesDropbox(client));
                     if(fileChosen.isPresent()) {
-                        dropboxDownloadFile(fileChosen.get(), client);
+                        Optional<ObservableList<Product>> products = dropboxDownloadFile(fileChosen.get(), client);
+                        if(products.isPresent()) {
+                            table.getItems().clear();
+                            table.getItems().addAll(products.get());
+                        }
                     }
                 } catch (DbxException e) {
                     e.printStackTrace();
@@ -57,18 +61,20 @@ public class DropboxDownload {
         }
     }
 
-    private void dropboxDownloadFile(String file, DbxClientV2 client) {
+    private Optional<ObservableList<Product>> dropboxDownloadFile(String file, DbxClientV2 client) {
         try {
             DbxDownloader<FileMetadata> downloader = client.files().download("/"+file);
             try (FileOutputStream out = new FileOutputStream(file)){
                 downloader.download(out);
-                new JSONHandler().readJsonFile(new File(file));
+                return Optional.of(new JSONHandler().readJsonFile(new File(file)));
             } catch (DbxException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return Optional.ofNullable(null);
     }
 
     ObservableList<FileItem> getFilesDropbox(DbxClientV2 client) {
