@@ -407,7 +407,7 @@ class Components {
     }
 
     /**
-     *
+     * Updates table's width and tableColumns width to fit program.
      */
     void updateTableColumnWidth() {
         table.setMaxWidth(stage.getWidth());
