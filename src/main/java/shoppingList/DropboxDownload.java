@@ -1,8 +1,9 @@
 package shoppingList;
 
-import com.dropbox.core.DbxAppInfo;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.*;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.Metadata;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -18,9 +19,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 public class DropboxDownload {
@@ -35,14 +38,36 @@ public class DropboxDownload {
                     .withNoRedirect()
                     .build();
             String authorizeUrl = auth.authorize(authRequest);
-            Optional<String> userToken = getAuthUrl(authorizeUrl);
-            if (userToken.isPresent()) {
-                System.out.print(userToken.get());
-                generateFilePicker();
+            Optional<String> code = getAuthUrl(authorizeUrl);
+
+            if (code.isPresent()) {
+                System.out.print(code.get());
+
+                try {
+                    DbxAuthFinish authFinish = auth.finishFromCode(code.get());
+                    DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
+                    getFilesDropbox(client);
+                    generateFilePicker();
+                } catch (DbxException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    ObservableList<FileItem> getFilesDropbox(DbxClientV2 client) {
+        ObservableList<FileItem> files = FXCollections.observableArrayList();
+        try {
+            System.out.println("FILES IN DROPBOX: ");
+            client.files().listFolder("").getEntries().forEach(meta -> {
+                System.out.println(meta.getName());
+                files.add(new FileItem(meta.getName()));
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return files;
     }
 
     Optional<String> getAuthUrl(String url) {
