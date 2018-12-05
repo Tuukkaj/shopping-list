@@ -252,6 +252,7 @@ class Components {
         //DROPBOX---
         Menu dropBoxMenu = new Menu("Dropbox");
         MenuItem importItem = new MenuItem("Download from Dropbox");
+        importItem.setOnAction(event -> new DropboxDownload().download());
         MenuItem uploadItem = new MenuItem("Upload to Dropbox");
         uploadItem.setOnAction(actionEvent -> new DropboxUpload().uploadCurrentListToDropbox(application, table));
         uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));

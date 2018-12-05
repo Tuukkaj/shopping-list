@@ -22,6 +22,7 @@ public class DropboxDownload {
                 .add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
 
         dialog.getDialogPane().setContent(generateTable());
+        dialog.showAndWait();
 
     }
 
