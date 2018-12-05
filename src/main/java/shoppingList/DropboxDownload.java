@@ -46,8 +46,7 @@ public class DropboxDownload {
                 try {
                     DbxAuthFinish authFinish = auth.finishFromCode(code.get());
                     DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-                    getFilesDropbox(client);
-                    generateFilePicker();
+                    generateFilePicker(getFilesDropbox(client));
                 } catch (DbxException e) {
                     e.printStackTrace();
                 }
@@ -62,7 +61,9 @@ public class DropboxDownload {
             System.out.println("FILES IN DROPBOX: ");
             client.files().listFolder("").getEntries().forEach(meta -> {
                 System.out.println(meta.getName());
-                files.add(new FileItem(meta.getName()));
+                if(meta.getName().endsWith("json")) {
+                    files.add(new FileItem(meta.getName()));
+                }
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,32 +121,29 @@ public class DropboxDownload {
         return result;
     }
 
-    private void generateFilePicker() {
+    private void generateFilePicker(ObservableList<FileItem> files) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
         ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons()
                 .add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
         dialog.setTitle("Choose file to download");
-        VBox tableBox = generateTable();
+        VBox tableBox = generateTable(files);
         dialog.getDialogPane().setContent(tableBox);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
         dialog.showAndWait();
     }
 
-    private VBox generateTable() {
+    private VBox generateTable(ObservableList<FileItem> files) {
         VBox tableBox = new VBox();
 
         TableView<FileItem> tableView = new TableView<>();
-
-        ObservableList<FileItem> oList = FXCollections.observableArrayList();
-        oList.addAll(new FileItem("example.json"));
 
         TableColumn<FileItem, String> fileColumn = new TableColumn<>("File");
         fileColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         fileColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         fileColumn.setPrefWidth(200);
         tableView.getColumns().addAll(fileColumn);
-        tableView.setItems(oList);
+        tableView.setItems(files);
         tableBox.getChildren().addAll(tableView);
         return tableBox;
     }
