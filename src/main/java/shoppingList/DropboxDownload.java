@@ -1,5 +1,8 @@
 package shoppingList;
 
+import com.dropbox.core.DbxAppInfo;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxWebAuth;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -17,18 +20,28 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class DropboxDownload {
     Application app;
 
     void download(Application app) {
-        this.app = app;
-
-        Optional<String> auth = getAuthUrl("www.yle.fi");
-        if(auth.isPresent()) {
-            System.out.print(auth.get());
-            generateFilePicker();
+        try {
+            this.app = app;
+            DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
+            DbxWebAuth auth = new DbxWebAuth(requestConfig, DbxAppInfo.Reader.readFully(getClass().getResourceAsStream("auth.json")));
+            DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
+                    .withNoRedirect()
+                    .build();
+            String authorizeUrl = auth.authorize(authRequest);
+            Optional<String> userToken = getAuthUrl(authorizeUrl);
+            if (userToken.isPresent()) {
+                System.out.print(userToken.get());
+                generateFilePicker();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
