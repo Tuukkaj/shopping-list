@@ -255,6 +255,11 @@ class Components {
         exitItem.setOnAction((e) -> Platform.exit());
         file.getItems().addAll(printTable, uploadItem, readFile, saveAs, save, exitItem);
 
+        //DROPBOX---
+        Menu dropBoxMenu = new Menu("Dropbox");
+        MenuItem importItem = new MenuItem("Download file from Dropbox");
+        MenuItem exportItem = new MenuItem("Upload file to Dropbox");
+        dropBoxMenu.getItems().addAll(importItem,exportItem);
 
         //HELP--
         Menu help = new Menu("Help");
@@ -268,7 +273,7 @@ class Components {
 
 
         MenuBar menubar = new MenuBar();
-        menubar.getMenus().addAll(file,help);
+        menubar.getMenus().addAll(file, dropBoxMenu, help);
 
         v.getChildren().add(menubar);
         v.setAlignment(Pos.CENTER);
