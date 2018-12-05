@@ -1,22 +1,85 @@
 package shoppingList;
 
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+
+import java.util.Optional;
 
 public class DropboxDownload {
-    void download() {
-        generateFilePicker();
+    Application app;
+
+    void download(Application app) {
+        this.app = app;
+
+        Optional<String> auth = getAuthUrl("www.yle.fi");
+        if(auth.isPresent()) {
+            System.out.print(auth.get());
+            generateFilePicker();
+        }
+    }
+
+    Optional<String> getAuthUrl(String url) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Dropbox Authentication");
+        dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the code");
+
+        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
+        ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        ButtonType showLink = new ButtonType("Open Link", ButtonBar.ButtonData.FINISH);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL, showLink);
+        dialog.getDialogPane().addEventFilter(ActionEvent.ACTION, e -> {
+            if(e.getTarget().toString().contains("Open Link")) {
+                e.consume();
+                app.getHostServices().showDocument(url);
+            }
+        });
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField tokenField = new TextField();
+        tokenField.setPromptText("Dropbox code");
+
+        grid.add(new Label("Dropbox code:"), 0, 1);
+        grid.add(tokenField, 1, 1);
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        tokenField.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new String(tokenField.getText());
+            }
+            return null;
+        });
+
+        Platform.runLater(tokenField::requestFocus);
+        Optional<String> result = dialog.showAndWait();
+        return result;
     }
 
     private void generateFilePicker() {
