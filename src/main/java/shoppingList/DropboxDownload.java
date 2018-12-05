@@ -19,6 +19,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Optional;
 
 public class DropboxDownload {
@@ -41,7 +44,10 @@ public class DropboxDownload {
                 try {
                     DbxAuthFinish authFinish = auth.finishFromCode(code.get());
                     DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
-                    System.out.println(generateFilePicker(getFilesDropbox(client)));
+                    Optional<String> fileChosen = generateFilePicker(getFilesDropbox(client));
+                    if(fileChosen.isPresent()) {
+                        dropboxDownloadFile(fileChosen.get(), client);
+                    }
                 } catch (DbxException e) {
                     e.printStackTrace();
                 }
@@ -50,6 +56,21 @@ public class DropboxDownload {
             e.printStackTrace();
         }
     }
+
+    private void dropboxDownloadFile(String file, DbxClientV2 client) {
+        try {
+            DbxDownloader<FileMetadata> downloader = client.files().download("/"+file);
+            try (FileOutputStream out = new FileOutputStream(file)){
+                downloader.download(out);
+                new JSONHandler().readJsonFile(new File(file));
+            } catch (DbxException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     ObservableList<FileItem> getFilesDropbox(DbxClientV2 client) {
         ObservableList<FileItem> files = FXCollections.observableArrayList();
         try {
