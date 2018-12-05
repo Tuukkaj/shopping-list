@@ -262,7 +262,9 @@ class Components {
         helpItem.setOnAction(actionEvent -> generateHelpDialog());
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(actionEvent -> generateAboutDialog());
-        help.getItems().addAll(helpItem,aboutItem);
+        MenuItem devGithubItem = new MenuItem("Developers Github");
+        devGithubItem.setOnAction(e -> application.getHostServices().showDocument("https://github.com/Tuukkaj"));
+        help.getItems().addAll(helpItem,aboutItem, devGithubItem);
 
 
         MenuBar menubar = new MenuBar();
