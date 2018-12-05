@@ -131,7 +131,7 @@ class Components {
         ObservableList<Product> products = createObservableList();
         //QUALITY COLUMN
         TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
-        quantityColumn.setMinWidth(60);
+
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
             @Override
@@ -157,7 +157,7 @@ class Components {
 
         //NAME COLUMN
         TableColumn<Product, String> nameColumn = new TableColumn<>("Product");
-        nameColumn.setMinWidth(240);
+
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -396,5 +396,13 @@ class Components {
         } else {
             table.edit(pos.getRow(), table.getColumns().get(0));
         }
+    }
+
+    /**
+     *
+     */
+    void updateTableColumnWidth() {
+        table.getColumns().get(0).setMinWidth(table.getWidth()*0.2f);
+        table.getColumns().get(1).setMinWidth(table.getWidth()*0.78f);
     }
 }

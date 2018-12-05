@@ -37,5 +37,6 @@ public class ShoppingListMain extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("icons/shoppingListIcon.png")));
         stage.setTitle("Tuukka Lister");
         stage.show();
+        components.updateTableColumnWidth();
     }
 }
