@@ -13,10 +13,8 @@ import java.util.regex.Pattern;
 
 public class ShoppingListReader {
     public ObservableList<Product> read(File file) {
-        ObservableList<Product> list  = FXCollections.observableArrayList();
         String content = fileToString(file);
-        stringToObservableList(content);
-        return list;
+        return stringToObservableList(content);
     }
 
     private ObservableList<Product> stringToObservableList(String content) {
