@@ -336,15 +336,6 @@ class Components {
         alert.showAndWait();
     }
 
-    //Remove in final release.
-
-    /**
-     * Prints tableViews content to console.
-     */
-    private void printTableContents() {
-        table.getItems().forEach(p -> System.out.println("PRODUCT: " + p.getName() + " QUANTITY: " + p.getQuantity()));
-    }
-
     /**
      * Constructor. Sets stage and application class variables.
      * @param stage current javafx stage.
