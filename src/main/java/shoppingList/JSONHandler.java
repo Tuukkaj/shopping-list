@@ -14,7 +14,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 /**
- * Handles everything related to JSON.
+ * Handles everything related to JSON. Uses JSONParser to read and write json files.
  *
  * @author Tuukka Juusela
  * @version 2018.0212
