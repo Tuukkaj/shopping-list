@@ -11,12 +11,29 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ShoppingListReader {
+/**
+ * Handles reading of JSON files written by this program.
+ *
+ * @author Tuukka Juusela
+ * @version 2018.0212
+ * @since 1.8
+ */
+class ShoppingListReader {
+    /**
+     * Reads JSON file and creates ObservableList<Product> from it.
+     * @param file to read.
+     * @return ObservableList<Product> created from given file.
+     */
     public ObservableList<Product> read(File file) {
         String content = fileToString(file);
         return stringToObservableList(content);
     }
 
+    /**
+     * Parses through given parameter String and creates ObservableList<Product> from it.
+     * @param content File read as a String.
+     * @return ObservableList<Product> created from given parameter.
+     */
     private ObservableList<Product> stringToObservableList(String content) {
         ObservableList<Product> list  = FXCollections.observableArrayList();
 
@@ -52,7 +69,11 @@ public class ShoppingListReader {
         return list;
     }
 
-
+    /**
+     * Reads file and creates String from it.
+     * @param file File to read.
+     * @return String created from file.
+     */
     private String fileToString(File file) {
         BufferedReader bufferedReader;
         StringBuilder builder = new StringBuilder();
