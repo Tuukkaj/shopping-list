@@ -46,6 +46,12 @@ class JSONHandler {
         return products;
     }
 
+    void readShoppingListFile() {
+         ObservableList<Product> list = new ShoppingListReader().read(new File("list.json"));
+
+
+    }
+
     /**
      * Saves tableView to JSONFile.
      * @param filename name of the file json file to be saved.

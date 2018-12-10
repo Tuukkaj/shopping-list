@@ -344,6 +344,7 @@ class Components {
     Components(Stage stage, Application app) {
         this.stage = stage;
         this.application = app;
+        new JSONHandler().readShoppingListFile();
     }
 
     /**
