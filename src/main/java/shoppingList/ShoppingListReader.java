@@ -7,16 +7,55 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShoppingListReader {
     public ObservableList<Product> read(File file) {
         ObservableList<Product> list  = FXCollections.observableArrayList();
         String content = fileToString(file);
-        System.out.println(content);
+        stringToObservableList(content);
         return list;
     }
 
-    String fileToString(File file) {
+    private ObservableList<Product> stringToObservableList(String content) {
+        ObservableList<Product> list  = FXCollections.observableArrayList();
+
+        if(content.contains("shoppingList")) {
+            Pattern squarePattern = Pattern.compile("(\\[.*\\])");
+            Matcher squareMatcher = squarePattern.matcher(content);
+            if(squareMatcher.find()) {
+                String shoppingListContent = squareMatcher.group().substring(1);
+                shoppingListContent = shoppingListContent.substring(0, shoppingListContent.length()-1);
+                shoppingListContent = shoppingListContent.replaceAll("\\s+", " ").trim();
+                Matcher itemMatcher = Pattern.compile("(\\{.*?})").matcher(shoppingListContent);
+
+                ArrayList<String> items = new ArrayList<>();
+                while (itemMatcher.find()) {
+                    items.add(itemMatcher.group());
+                }
+
+                for(String item: items) {
+                    Matcher productMatcher = Pattern.compile("\"product\":\\s(.*?), \"quantity\":\\s(\\d+)\\s}")
+                            .matcher(item);
+
+                    while (productMatcher.find()) {
+                        try {
+                            list.add(new Product(productMatcher.group(1).substring(1, productMatcher.group(1).length()-1), Integer.parseInt(productMatcher.group(2))));
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+
+    private String fileToString(File file) {
         BufferedReader bufferedReader;
         StringBuilder builder = new StringBuilder();
         try (FileReader fileReader = new FileReader(file)){
