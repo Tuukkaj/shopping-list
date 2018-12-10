@@ -232,7 +232,7 @@ class Components {
             File chosenFile = generateFileChooserRead();
             if(chosenFile != null) {
                 table.getItems().clear();
-                table.getItems().addAll(new JSONHandler().readJsonFile(chosenFile));
+                table.getItems().addAll(new ShoppingListReader().read(chosenFile));
             }
         }));
         readFile.setAccelerator(KeyCombination.keyCombination("SHORTCUT+R"));
