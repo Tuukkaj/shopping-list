@@ -259,6 +259,14 @@ class Components {
         uploadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+U"));
         dropBoxMenu.getItems().addAll(importItem,uploadItem);
 
+        //H2 DATABASE
+        Menu database = new Menu("Database");
+        MenuItem uploadDatabase = new MenuItem("Upload to H2 Database");
+        uploadDatabase.setOnAction(e -> System.out.println("upload"));
+        MenuItem downloadDatabase = new MenuItem("Download from H2 Database");
+        downloadDatabase.setOnAction(event -> System.out.println("download"));
+        database.getItems().addAll(uploadDatabase, downloadDatabase);
+
         //HELP--
         Menu help = new Menu("Help");
         MenuItem helpItem = new MenuItem("Help");
@@ -271,7 +279,7 @@ class Components {
 
 
         MenuBar menubar = new MenuBar();
-        menubar.getMenus().addAll(file, dropBoxMenu, help);
+        menubar.getMenus().addAll(file, dropBoxMenu, database, help);
 
         v.getChildren().add(menubar);
         v.setAlignment(Pos.CENTER);
