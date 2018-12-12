@@ -23,6 +23,7 @@ import shoppingList.Database.DatabaseUpload;
 
 
 import java.io.*;
+import java.util.Optional;
 
 /**
  * Main functionality of JavaFx. Holds component creation and functionality of JavaFx components.
@@ -267,7 +268,13 @@ class Components {
         uploadDatabase.setOnAction(e -> new DatabaseUpload().upload(table.getItems()));
         uploadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+Q"));
         MenuItem downloadDatabase = new MenuItem("Download from H2 Database");
-        downloadDatabase.setOnAction(event -> new DatabaseDownload().download());
+        downloadDatabase.setOnAction(event -> {
+            Optional<ObservableList<Product>> databaseDownload = new DatabaseDownload().download();
+            if(databaseDownload.isPresent()) {
+                table.getItems().clear();
+                table.getItems().addAll(databaseDownload.get());
+            }
+        });
         downloadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+W"));
         database.getItems().addAll(uploadDatabase, downloadDatabase);
 
