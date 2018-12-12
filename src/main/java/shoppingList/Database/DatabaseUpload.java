@@ -1,4 +1,4 @@
-package shoppingList;
+package shoppingList.Database;
 
 
 import javafx.application.Platform;
@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import shoppingList.Product;
+import shoppingList.ShoppingListMain;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,9 +37,9 @@ public class DatabaseUpload {
         dialog.setTitle("H2 Upload");
         dialog.setHeaderText("Enter table's name\n\nNOTICE: If table exists with same name it will be overwritten");
 
-        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/h2.png"))));
+        dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png"))));
         Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("icons/h2.png")));
+        dialogStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png")));
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 
