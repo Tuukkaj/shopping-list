@@ -266,6 +266,7 @@ class Components {
         uploadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+Q"));
         MenuItem downloadDatabase = new MenuItem("Download from H2 Database");
         downloadDatabase.setOnAction(event -> System.out.println("download"));
+        downloadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+W"));
         database.getItems().addAll(uploadDatabase, downloadDatabase);
 
         //HELP--
