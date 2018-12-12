@@ -262,7 +262,7 @@ class Components {
         //H2 DATABASE
         Menu database = new Menu("Database");
         MenuItem uploadDatabase = new MenuItem("Upload to H2 Database");
-        uploadDatabase.setOnAction(e -> new DatabaseManager().upload());
+        uploadDatabase.setOnAction(e -> new DatabaseManager().upload(table.getItems()));
         uploadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+Q"));
         MenuItem downloadDatabase = new MenuItem("Download from H2 Database");
         downloadDatabase.setOnAction(event -> System.out.println("download"));

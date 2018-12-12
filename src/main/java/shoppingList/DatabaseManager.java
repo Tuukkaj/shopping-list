@@ -1,40 +1,44 @@
 package shoppingList;
 
 
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseManager {
-    // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/TuukkaLister";
-
-    //  Database credentials
+    static final String DB_URL = "jdbc:h2:~/TuukkaLister;";
     static final String USER = "sa";
     static final String PASS = "";
-    public void upload() {
+
+    public void upload(ObservableList<Product> list) {
         Connection conn = null;
         Statement stmt = null;
         try {
-            // STEP 1: Register JDBC driver
             Class.forName(JDBC_DRIVER);
 
-            //STEP 2: Open a connection
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-
-            //STEP 3: Execute a query
             System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
-            String sql =  "CREATE TABLE   REGISTRATION " +
+            String dropSql = "DROP TABLE SHOPPINGLIST";
+            stmt.executeUpdate(dropSql);
+            String sql =  "CREATE TABLE SHOPPINGLIST " +
                     "(id INTEGER not NULL, " +
-                    " first VARCHAR(255), " +
-                    " last VARCHAR(255), " +
-                    " age INTEGER, " +
+                    " product VARCHAR(255), " +
+                    " amount INTEGER, " +
                     " PRIMARY KEY ( id ))";
             stmt.executeUpdate(sql);
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            for(int i = 0; i < list.size(); i++) {
+                System.out.println("INSERT INTO SHOPPINGLIST VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
+                sqlBuilder.append("INSERT INTO SHOPPINGLIST VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
+            }
+            stmt.executeUpdate(sqlBuilder.toString());
             System.out.println("Created table in given database...");
 
             // STEP 4: Clean-up environment
