@@ -1,12 +1,23 @@
 package shoppingList;
 
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 public class DatabaseManager {
     static final String JDBC_DRIVER = "org.h2.Driver";
@@ -15,7 +26,54 @@ public class DatabaseManager {
     static final String PASS = "";
 
     public void upload(ObservableList<Product> list) {
+        System.out.println(generateTableNameDialog());
         executeUpload(list, "ostoslista");
+    }
+
+    public Optional<String> generateTableNameDialog() {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("H2 Upload");
+        dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the link");
+
+        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
+        ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField tableNameField = new TextField();
+        tableNameField.setPromptText("shoppinglist-1-1-2019");
+
+
+        grid.add(new Label("Table name:"), 0, 0);
+        grid.add(tableNameField, 1, 0);
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        tableNameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        Platform.runLater(tableNameField::requestFocus);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new String(tableNameField.getText());
+            }
+            return null;
+        });
+
+        Optional<String> result = dialog.showAndWait();
+
+        return result;
     }
 
     private void executeUpload(ObservableList<Product> list, String tableName) {
