@@ -3,7 +3,6 @@ package shoppingList;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -11,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,8 +24,10 @@ public class DatabaseManager {
     static final String PASS = "";
 
     public void upload(ObservableList<Product> list) {
-        System.out.println(generateTableNameDialog());
-        executeUpload(list, "ostoslista");
+        Optional<String> tableName = generateTableNameDialog();
+        if(tableName.isPresent()) {
+            executeUpload(list, tableName.get());
+        }
     }
 
     public Optional<String> generateTableNameDialog() {
