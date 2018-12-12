@@ -10,6 +10,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import shoppingList.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,11 +22,53 @@ public class DatabaseDownload {
     static final String USER = "sa";
     static final String PASS = "";
 
-    public void download() {
+    public Optional<ObservableList<Product>> download() {
         Optional<String> chosenTable = generateFilePicker(getTables());
         if(chosenTable.isPresent()) {
-            System.out.println(chosenTable.get());
+            return Optional.ofNullable(loadTable(chosenTable.get()));
         }
+
+        return Optional.ofNullable(null);
+    }
+
+    private ObservableList<Product> loadTable(String tableName) {
+        ObservableList<Product> products = FXCollections.observableArrayList();
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            Class.forName(JDBC_DRIVER);
+
+            System.out.println("Connecting to database...");
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            System.out.println("Creating table in given database...");
+            stmt = conn.createStatement();
+
+            String sqlSelectTable = "SELECT * FROM " + tableName + ";";
+            ResultSet selectResult = stmt.executeQuery(sqlSelectTable);
+
+            while (selectResult.next()) {
+                products.add(new Product(selectResult.getString("PRODUCT"), selectResult.getInt("AMOUNT")));
+            }
+
+            stmt.close();
+            conn.close();
+        } catch(SQLException se) {
+            se.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            try{
+                if(stmt!=null) stmt.close();
+            } catch(SQLException se2) {
+            }
+            try {
+                if(conn!=null) conn.close();
+            } catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+
+        return products;
     }
 
     private Optional<String> generateFilePicker(ObservableList<FileItem> tables) {
