@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import shoppingList.Database.DatabaseDownload;
 import shoppingList.Database.DatabaseUpload;
 
 
@@ -266,7 +267,7 @@ class Components {
         uploadDatabase.setOnAction(e -> new DatabaseUpload().upload(table.getItems()));
         uploadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+Q"));
         MenuItem downloadDatabase = new MenuItem("Download from H2 Database");
-        downloadDatabase.setOnAction(event -> System.out.println("download"));
+        downloadDatabase.setOnAction(event -> new DatabaseDownload().download());
         downloadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+W"));
         database.getItems().addAll(uploadDatabase, downloadDatabase);
 
