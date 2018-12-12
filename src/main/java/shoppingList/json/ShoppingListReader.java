@@ -1,7 +1,8 @@
-package shoppingList;
+package shoppingList.json;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import shoppingList.Product;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
  * @version 2018.0212
  * @since 1.8
  */
-class ShoppingListReader {
+public class ShoppingListReader {
     /**
      * Reads JSON file and creates ObservableList<Product> from it.
      * @param file to read.
