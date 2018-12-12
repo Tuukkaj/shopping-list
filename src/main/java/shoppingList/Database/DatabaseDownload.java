@@ -1,8 +1,19 @@
 package shoppingList.Database;
 
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class DatabaseDownload {
     static final String JDBC_DRIVER = "org.h2.Driver";
@@ -11,11 +22,55 @@ public class DatabaseDownload {
     static final String PASS = "";
 
     public void download() {
-        getTables().forEach(table -> System.out.println(table));
+        Optional<String> chosenTable = generateFilePicker(getTables());
+        if(chosenTable.isPresent()) {
+            System.out.println(chosenTable.get());
+        }
     }
 
-    private ArrayList<String> getTables() {
-        ArrayList<String> tables = new ArrayList<>();
+    private Optional<String> generateFilePicker(ObservableList<FileItem> tables) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png"))));
+        ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons()
+               .add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png")));
+        dialog.setTitle("Choose table to load");
+        TableView<FileItem> tableBox = generateTable(tables);
+        dialog.getDialogPane().setContent(tableBox);
+        ButtonType chooseButtonType = new ButtonType("Choose", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, chooseButtonType);
+
+        Node chooseButton = dialog.getDialogPane().lookupButton(chooseButtonType);
+        chooseButton.setDisable(true);
+
+        tableBox.setOnMouseClicked(e -> chooseButton.setDisable(tableBox.getSelectionModel().getSelectedCells().isEmpty()));
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == chooseButtonType) {
+                return tableBox.getItems().get(tableBox.getSelectionModel().getSelectedIndex()).getName();
+            }
+            return null;
+        });
+
+        Optional<String> result = dialog.showAndWait();
+
+        return result;
+    }
+
+    private TableView<FileItem> generateTable(ObservableList<FileItem> tables) {
+        TableView<FileItem> tableView = new TableView<>();
+
+        TableColumn<FileItem, String> fileColumn = new TableColumn<>("Table");
+        fileColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        fileColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        fileColumn.setPrefWidth(200);
+        tableView.getColumns().addAll(fileColumn);
+        tableView.setItems(tables);
+
+        return tableView;
+    }
+
+    private ObservableList<FileItem> getTables() {
+        ObservableList<FileItem> tables = FXCollections.observableArrayList();
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -27,7 +82,7 @@ public class DatabaseDownload {
             stmt = conn.createStatement();
             ResultSet tableResult = stmt.executeQuery("SHOW TABLES;");
             while (tableResult.next()) {
-                tables.add(tableResult.getString("TABLE_NAME"));
+                tables.add(new FileItem(tableResult.getString("TABLE_NAME")));
             }
 
             // STEP 4: Clean-up environment
@@ -54,5 +109,21 @@ public class DatabaseDownload {
         System.out.println("Goodbye!");
 
         return tables;
+    }
+
+    public class FileItem {
+        String name;
+
+        FileItem(String name) {
+            setName(name);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }
