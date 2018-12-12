@@ -33,11 +33,11 @@ public class DatabaseManager {
     public Optional<String> generateTableNameDialog() {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("H2 Upload");
-        dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the link");
+        dialog.setHeaderText("Enter table's name\n\nNOTICE: If table exists with same name it will be overwritten");
 
-        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
+        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/h2.png"))));
         Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
+        dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("icons/h2.png")));
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 
