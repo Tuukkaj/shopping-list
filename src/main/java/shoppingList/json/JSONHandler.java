@@ -1,4 +1,4 @@
-package shoppingList;
+package shoppingList.json;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +8,7 @@ import jsonParser.JSONComponent.JSONArray;
 import jsonParser.JSONComponent.JSONFileData;
 import jsonParser.JSONComponent.JSONItem;
 import jsonParser.JSONParser;
+import shoppingList.Product;
 
 import java.io.File;
 import java.security.InvalidParameterException;

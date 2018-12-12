@@ -22,6 +22,7 @@ import shoppingList.Database.DatabaseDownload;
 import shoppingList.Database.DatabaseUpload;
 import shoppingList.dropbox.DropboxDownload;
 import shoppingList.dropbox.DropboxUpload;
+import shoppingList.json.JSONHandler;
 
 
 import java.io.*;
