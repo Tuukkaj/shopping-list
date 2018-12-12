@@ -1,4 +1,4 @@
-package shoppingList;
+package shoppingList.dropbox;
 
 import com.dropbox.core.*;
 import com.dropbox.core.v2.DbxClientV2;
@@ -19,6 +19,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import shoppingList.JSONHandler;
+import shoppingList.Product;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,11 +29,11 @@ import java.util.Optional;
 public class DropboxDownload {
     Application app;
 
-    void download(Application app, TableView<Product> table) {
+    public void download(Application app, TableView<Product> table) {
         try {
             this.app = app;
             DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
-            DbxWebAuth auth = new DbxWebAuth(requestConfig, DbxAppInfo.Reader.readFully(getClass().getResourceAsStream("auth.json")));
+            DbxWebAuth auth = new DbxWebAuth(requestConfig, DbxAppInfo.Reader.readFully(getClass().getClassLoader().getResourceAsStream("shoppingList/auth.json")));
             DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
                     .withNoRedirect()
                     .build();
@@ -98,9 +100,9 @@ public class DropboxDownload {
         dialog.setTitle("Dropbox Authentication");
         dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the code");
 
-        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
+        dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png"))));
         Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
+        dialogStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png")));
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         ButtonType showLink = new ButtonType("Open Link", ButtonBar.ButtonData.FINISH);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL, showLink);
@@ -145,9 +147,9 @@ public class DropboxDownload {
 
     private Optional<String> generateFilePicker(ObservableList<FileItem> files) {
         Dialog<String> dialog = new Dialog<>();
-        dialog.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/dropbox.png"))));
+        dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png"))));
         ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons()
-                .add(new Image(getClass().getResourceAsStream("icons/dropbox.png")));
+                .add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png")));
         dialog.setTitle("Choose file to download");
         TableView<FileItem> tableBox = generateTable(files);
         dialog.getDialogPane().setContent(tableBox);

@@ -20,14 +20,14 @@ import java.util.ArrayList;
  * @version 2018.0212
  * @since 1.8
  */
-class JSONHandler {
+public class JSONHandler {
     /**
      * Reads json file and returns observableList of products. If exception is caused by something generates warning
      * dialog.
      * @param file to read.
      * @return ObservableList of products from JSON file.
      */
-     ObservableList<Product> readJsonFile(File file) {
+     public ObservableList<Product> readJsonFile(File file) {
         JSONFileData fileData = new JSONParser().read(file);
         ObservableList<Product> products = FXCollections.observableArrayList();
 
@@ -53,7 +53,7 @@ class JSONHandler {
      * @param table TableView of products to save.
      * @return File where tableView was saved.
      */
-     File saveTableViewAsJson(String filename, TableView<Product> table) {
+     public File saveTableViewAsJson(String filename, TableView<Product> table) {
         JSONParser parser = new JSONParser();
         JSONFileData data = new JSONFileData();
         JSONArray array = new JSONArray("shoppingList");
@@ -77,7 +77,7 @@ class JSONHandler {
      * @param file to save TableView.
      * @param table TableView to save.
      */
-    void saveAsJSON(File file, TableView<Product> table) {
+    public void saveAsJSON(File file, TableView<Product> table) {
         JSONParser parser = new JSONParser();
         JSONFileData data = new JSONFileData();
         JSONArray array = new JSONArray("shoppingList");
