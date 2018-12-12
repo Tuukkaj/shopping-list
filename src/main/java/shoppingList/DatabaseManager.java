@@ -15,6 +15,10 @@ public class DatabaseManager {
     static final String PASS = "";
 
     public void upload(ObservableList<Product> list) {
+        executeUpload(list, "ostoslista");
+    }
+
+    private void executeUpload(ObservableList<Product> list, String tableName) {
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -24,9 +28,10 @@ public class DatabaseManager {
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
             System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
-            String dropSql = "DROP TABLE SHOPPINGLIST";
+            System.out.println("TABLE: " + tableName);
+            String dropSql = "DROP TABLE IF EXISTS " + tableName;
             stmt.executeUpdate(dropSql);
-            String sql =  "CREATE TABLE SHOPPINGLIST " +
+            String sql =  "CREATE TABLE "+ tableName +
                     "(id INTEGER not NULL, " +
                     " product VARCHAR(255), " +
                     " amount INTEGER, " +
@@ -35,8 +40,11 @@ public class DatabaseManager {
 
             StringBuilder sqlBuilder = new StringBuilder();
             for(int i = 0; i < list.size(); i++) {
-                System.out.println("INSERT INTO SHOPPINGLIST VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
-                sqlBuilder.append("INSERT INTO SHOPPINGLIST VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
+                if(list.get(i).getName().equals("-") && (list.get(i).getQuantity() == 1)) {
+                } else {
+                    System.out.println("INSERT INTO "+tableName+" VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
+                    sqlBuilder.append("INSERT INTO "+tableName+" VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
+                }
             }
             stmt.executeUpdate(sqlBuilder.toString());
             System.out.println("Created table in given database...");
