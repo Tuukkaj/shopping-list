@@ -32,7 +32,7 @@ public class DatabaseUpload {
         }
     }
 
-    public Optional<String> generateTableNameDialog() {
+    private Optional<String> generateTableNameDialog() {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("H2 Upload");
         dialog.setHeaderText("Enter table's name\n\nNOTICE: If table exists with same name it will be overwritten");
