@@ -15,4 +15,15 @@ public class DatabaseErrorDialogs {
         alert.setContentText("Something went horribly wrong.\nPlease contact the developer");
         alert.showAndWait();
     }
+
+    public void generateSQLError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png")));
+        alert.setTitle("SQL Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
