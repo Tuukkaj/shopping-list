@@ -19,6 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import shoppingList.database.DatabaseDownload;
+import shoppingList.database.DatabaseDrop;
 import shoppingList.database.DatabaseUpload;
 import shoppingList.dropbox.DropboxDownload;
 import shoppingList.dropbox.DropboxUpload;
@@ -94,9 +95,7 @@ class Components {
      */
     private Button generateRemoveButton() {
          Button b = new Button("Remove");
-         b.setOnAction(e -> {
-             table.getItems().remove(table.getFocusModel().getFocusedCell().getRow());
-         });
+         b.setOnAction(e -> table.getItems().remove(table.getFocusModel().getFocusedCell().getRow()));
 
          return b;
     }
@@ -107,9 +106,7 @@ class Components {
      */
     private Button generateModifyButton() {
          Button b = new Button("Modify");
-         b.setOnAction(event -> {
-             tableViewModify();
-         });
+         b.setOnAction(event -> tableViewModify());
 
          return b;
     }
@@ -280,7 +277,9 @@ class Components {
             }
         });
         downloadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+W"));
-        database.getItems().addAll(uploadDatabase, downloadDatabase);
+        MenuItem dropTable = new MenuItem("Drop H2 Table");
+        dropTable.setOnAction(e -> new DatabaseDrop().drop());
+        database.getItems().addAll(uploadDatabase, downloadDatabase, dropTable);
 
         //HELP--
         Menu help = new Menu("Help");
