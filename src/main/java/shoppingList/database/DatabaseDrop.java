@@ -44,6 +44,7 @@ public class DatabaseDrop {
         } catch(SQLException se) {
             se.printStackTrace();
         } catch(Exception e) {
+            new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
         } finally {
             try{
