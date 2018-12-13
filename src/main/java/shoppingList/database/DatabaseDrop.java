@@ -121,10 +121,11 @@ public class DatabaseDrop {
             stmt.close();
             conn.close();
         } catch(SQLException se) {
-            //Handle errors for JDBC
+            new DatabaseErrorDialogs().generateSQLError("Something went wrong when dropping table\n" +
+                    "Make sure that you don't have other connections to H2 database.");
             se.printStackTrace();
         } catch(Exception e) {
-            //Handle errors for Class.forName
+            new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
         } finally {
             //finally block used to close resources
