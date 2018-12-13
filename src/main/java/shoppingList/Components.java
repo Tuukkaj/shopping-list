@@ -18,8 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import shoppingList.Database.DatabaseDownload;
-import shoppingList.Database.DatabaseUpload;
+import shoppingList.database.DatabaseDownload;
+import shoppingList.database.DatabaseUpload;
 import shoppingList.dropbox.DropboxDownload;
 import shoppingList.dropbox.DropboxUpload;
 import shoppingList.json.JSONHandler;
@@ -267,11 +267,11 @@ class Components {
         dropBoxMenu.getItems().addAll(importItem,uploadItem);
 
         //H2 DATABASE
-        Menu database = new Menu("Database");
-        MenuItem uploadDatabase = new MenuItem("Upload to H2 Database");
+        Menu database = new Menu("database");
+        MenuItem uploadDatabase = new MenuItem("Upload to H2 database");
         uploadDatabase.setOnAction(e -> new DatabaseUpload().upload(table.getItems()));
         uploadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+Q"));
-        MenuItem downloadDatabase = new MenuItem("Download from H2 Database");
+        MenuItem downloadDatabase = new MenuItem("Download from H2 database");
         downloadDatabase.setOnAction(event -> {
             Optional<ObservableList<Product>> databaseDownload = new DatabaseDownload().download();
             if(databaseDownload.isPresent()) {

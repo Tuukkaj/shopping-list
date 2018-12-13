@@ -1,4 +1,4 @@
-package shoppingList.Database;
+package shoppingList.database;
 
 
 import javafx.collections.FXCollections;
@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import shoppingList.Product;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class DatabaseDownload {

@@ -1,4 +1,4 @@
-package shoppingList.Database;
+package shoppingList.database;
 
 
 import javafx.application.Platform;
@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import shoppingList.Product;
-import shoppingList.ShoppingListMain;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
