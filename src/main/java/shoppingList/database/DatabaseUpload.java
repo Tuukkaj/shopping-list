@@ -19,10 +19,10 @@ import java.sql.Statement;
 import java.util.Optional;
 
 public class DatabaseUpload {
-    static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/TuukkaLister;";
-    static final String USER = "sa";
-    static final String PASS = "";
+    private static final String JDBC_DRIVER = "org.h2.Driver";
+    private static final String DB_URL = "jdbc:h2:~/TuukkaLister;";
+    private static final String USER = "sa";
+    private static final String PASS = "";
 
     public void upload(ObservableList<Product> list) {
         Optional<String> tableName = generateTableNameDialog();
