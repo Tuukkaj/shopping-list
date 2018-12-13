@@ -3,6 +3,7 @@ package shoppingList.dropbox;
 import com.dropbox.core.*;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.WriteMode;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -62,7 +63,7 @@ public class DropboxUpload {
                     DbxAuthFinish authFinish = auth.finishFromCode(code);
                     DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
                     try (InputStream in = new FileInputStream(jsonFileName)) {
-                        FileMetadata metadata = client.files().uploadBuilder("/" + jsonFileName).uploadAndFinish(in);
+                        FileMetadata metadata = client.files().uploadBuilder("/" + jsonFileName).withMode(WriteMode.OVERWRITE).uploadAndFinish(in);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
