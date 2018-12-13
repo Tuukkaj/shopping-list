@@ -9,7 +9,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import shoppingList.Product;
 
 import java.sql.*;
 import java.util.Optional;
@@ -117,7 +116,6 @@ public class DatabaseDrop {
                 tables.add(new FileItem(tableResult.getString("TABLE_NAME")));
             }
 
-            // STEP 4: Clean-up environment
             stmt.close();
             conn.close();
         } catch(SQLException se) {
@@ -128,18 +126,17 @@ public class DatabaseDrop {
             new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
         } finally {
-            //finally block used to close resources
             try{
                 if(stmt!=null) stmt.close();
             } catch(SQLException se2) {
                 se2.printStackTrace();
-            } // nothing we can do
+            }
             try {
                 if(conn!=null) conn.close();
             } catch(SQLException se){
                 se.printStackTrace();
-            } //end finally try
-        } //end try
+            }
+        }
         System.out.println("Goodbye!");
 
         return tables;
