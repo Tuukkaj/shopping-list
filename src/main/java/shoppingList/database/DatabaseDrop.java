@@ -15,20 +15,17 @@ import java.sql.*;
 import java.util.Optional;
 
 public class DatabaseDrop {
-    static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/TuukkaLister;";
-    static final String USER = "sa";
-    static final String PASS = "";
+    private static final String JDBC_DRIVER = "org.h2.Driver";
+    private static final String DB_URL = "jdbc:h2:~/TuukkaLister;";
+    private static final String USER = "sa";
+    private static final String PASS = "";
 
     public void drop() {
         Optional<String> chosenTable = generateFilePicker(getTables());
-        if(chosenTable.isPresent()) {
-            loadTable(chosenTable.get());
-        }
+        chosenTable.ifPresent(this::dropTable);
     }
 
-    private ObservableList<Product> loadTable(String tableName) {
-        ObservableList<Product> products = FXCollections.observableArrayList();
+    private void dropTable(String tableName) {
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -39,12 +36,8 @@ public class DatabaseDrop {
             System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
 
-            String sqlSelectTable = "SELECT * FROM " + tableName + ";";
-            ResultSet selectResult = stmt.executeQuery(sqlSelectTable);
-
-            while (selectResult.next()) {
-                products.add(new Product(selectResult.getString("PRODUCT"), selectResult.getInt("AMOUNT")));
-            }
+            String sqlDrop = "DROP TABLE " + tableName+";";
+            stmt.executeUpdate(sqlDrop);
 
             stmt.close();
             conn.close();
@@ -56,6 +49,7 @@ public class DatabaseDrop {
             try{
                 if(stmt!=null) stmt.close();
             } catch(SQLException se2) {
+                se2.printStackTrace();
             }
             try {
                 if(conn!=null) conn.close();
@@ -63,8 +57,6 @@ public class DatabaseDrop {
                 se.printStackTrace();
             }
         }
-
-        return products;
     }
 
     private Optional<String> generateFilePicker(ObservableList<FileItem> tables) {
@@ -72,10 +64,10 @@ public class DatabaseDrop {
         dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png"))));
         ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons()
                 .add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png")));
-        dialog.setTitle("Choose table to load");
+        dialog.setTitle("Choose table to drop");
         TableView<FileItem> tableBox = generateTable(tables);
         dialog.getDialogPane().setContent(tableBox);
-        ButtonType chooseButtonType = new ButtonType("Choose", ButtonBar.ButtonData.OK_DONE);
+        ButtonType chooseButtonType = new ButtonType("Drop", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, chooseButtonType);
 
         Node chooseButton = dialog.getDialogPane().lookupButton(chooseButtonType);
@@ -138,6 +130,7 @@ public class DatabaseDrop {
             try{
                 if(stmt!=null) stmt.close();
             } catch(SQLException se2) {
+                se2.printStackTrace();
             } // nothing we can do
             try {
                 if(conn!=null) conn.close();
