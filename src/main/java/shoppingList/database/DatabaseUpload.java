@@ -108,27 +108,28 @@ public class DatabaseUpload {
             stmt.executeUpdate(sqlBuilder.toString());
             System.out.println("Created table in given database...");
 
-            // STEP 4: Clean-up environment
             stmt.close();
             conn.close();
         } catch(SQLException se) {
             //Handle errors for JDBC
+            new DatabaseErrorDialogs().generateSQLError("Something went wrong when uploading your table\n" +
+                    "Make sure that you don't have other connections to H2 database.");
             se.printStackTrace();
         } catch(Exception e) {
             new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
         } finally {
-            //finally block used to close resources
             try{
                 if(stmt!=null) stmt.close();
             } catch(SQLException se2) {
-            } // nothing we can do
+                se2.printStackTrace();
+            }
             try {
                 if(conn!=null) conn.close();
             } catch(SQLException se){
                 se.printStackTrace();
-            } //end finally try
-        } //end try
+            }
+        }
         System.out.println("Goodbye!");
     }
 }
