@@ -134,7 +134,7 @@ public class DatabaseDownload {
             //Handle errors for JDBC
             se.printStackTrace();
         } catch(Exception e) {
-            //Handle errors for Class.forName
+            new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
         } finally {
             //finally block used to close resources
