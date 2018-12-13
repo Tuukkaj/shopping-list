@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class DatabaseErrorDialogs {
-    private void generateError() {
+    public void generateError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
