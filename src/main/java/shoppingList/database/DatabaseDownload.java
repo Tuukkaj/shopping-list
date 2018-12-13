@@ -127,7 +127,6 @@ public class DatabaseDownload {
                 tables.add(new FileItem(tableResult.getString("TABLE_NAME")));
             }
 
-            // STEP 4: Clean-up environment
             stmt.close();
             conn.close();
         } catch(SQLException se) {
@@ -138,17 +137,17 @@ public class DatabaseDownload {
             new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
         } finally {
-            //finally block used to close resources
             try{
                 if(stmt!=null) stmt.close();
             } catch(SQLException se2) {
-            } // nothing we can do
+                se2.printStackTrace();
+            }
             try {
                 if(conn!=null) conn.close();
             } catch(SQLException se){
                 se.printStackTrace();
-            } //end finally try
-        } //end try
+            }
+        }
         System.out.println("Goodbye!");
 
         return tables;
