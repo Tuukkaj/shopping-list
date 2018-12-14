@@ -9,6 +9,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import shoppingList.FileItem;
 
 import java.io.File;
 import java.sql.*;
@@ -146,21 +147,5 @@ public class DatabaseDrop {
 
 
         return Optional.of(tables);
-    }
-
-    public class FileItem {
-        String name;
-
-        FileItem(String name) {
-            setName(name);
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
     }
 }
