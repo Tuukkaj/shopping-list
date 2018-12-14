@@ -279,6 +279,7 @@ class Components {
         downloadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+W"));
         MenuItem dropTable = new MenuItem("Drop H2 Table");
         dropTable.setOnAction(e -> new DatabaseDrop().drop());
+        dropTable.setAccelerator(KeyCombination.keyCombination("SHORTCUT+E"));
         database.getItems().addAll(uploadDatabase, downloadDatabase, dropTable);
 
         //HELP--
