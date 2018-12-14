@@ -223,6 +223,9 @@ public class DropboxDownload {
         return tableView;
     }
 
+    /**
+     * Generates information dialog for successful download. K
+     */
     private void generateDownloadSuccess() {
         Dialog dialog = new Dialog();
 
