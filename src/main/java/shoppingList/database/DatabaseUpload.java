@@ -107,7 +107,7 @@ public class DatabaseUpload {
             }
             stmt.executeUpdate(sqlBuilder.toString());
             System.out.println("Created table in given database...");
-
+            new DatabaseDialogs().generateDialog("H2 Upload", "Upload to H2 was successful");
             stmt.close();
             conn.close();
         } catch(SQLException se) {
