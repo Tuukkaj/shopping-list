@@ -126,7 +126,7 @@ public class DatabaseDrop {
             new DatabaseErrorDialogs().generateSQLError("Something went wrong when dropping table\n" +
                     "Make sure that you don't have other connections to H2 database.");
             se.printStackTrace();
-            return Optional.ofNullable(null);
+            return Optional.empty();
         } catch(Exception e) {
             new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
