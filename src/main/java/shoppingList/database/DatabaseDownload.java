@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import shoppingList.Product;
+import shoppingList.FileItem;
 
 import java.sql.*;
 import java.util.Optional;
@@ -155,21 +156,5 @@ public class DatabaseDownload {
         System.out.println("Goodbye!");
 
         return Optional.of(tables);
-    }
-
-    public class FileItem {
-        String name;
-
-        FileItem(String name) {
-            setName(name);
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
     }
 }
