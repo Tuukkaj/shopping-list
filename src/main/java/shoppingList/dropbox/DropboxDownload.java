@@ -223,7 +223,7 @@ public class DropboxDownload {
         return tableView;
     }
 
-    public void generateDownloadSuccess() {
+    private void generateDownloadSuccess() {
         Dialog dialog = new Dialog();
 
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
