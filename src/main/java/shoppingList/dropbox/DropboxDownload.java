@@ -224,7 +224,7 @@ public class DropboxDownload {
     }
 
     /**
-     * Generates information dialog for successful download. K
+     * Generates information dialog for successful download.
      */
     private void generateDownloadSuccess() {
         Dialog dialog = new Dialog();

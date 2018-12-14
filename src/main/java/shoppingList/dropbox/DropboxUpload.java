@@ -64,6 +64,7 @@ public class DropboxUpload {
                     DbxClientV2 client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
                     try (InputStream in = new FileInputStream(jsonFileName)) {
                         FileMetadata metadata = client.files().uploadBuilder("/" + jsonFileName).withMode(WriteMode.OVERWRITE).uploadAndFinish(in);
+                        generateUploadSuccess();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -156,5 +157,21 @@ public class DropboxUpload {
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         return result;
+    }
+
+    /**
+     * Generates information dialog for successful upload.
+     */
+    private void generateUploadSuccess() {
+        Dialog dialog = new Dialog();
+
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png")));
+        dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png"))));
+        dialog.setTitle("Dropbox Upload");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Upload was successful");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+        dialog.showAndWait();
     }
 }
