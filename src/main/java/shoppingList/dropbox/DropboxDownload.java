@@ -33,6 +33,16 @@ import java.util.Optional;
  */
 public class DropboxDownload {
 
+    /**
+     * Main method of the class. Used to load shopping list from user's Dropbox.
+     *
+     * Loads application's Dropbox authorization from external file and creates url to authenticate this application.
+     * Opens Dialog window where user is asked to enter authorization code from Dropbox. After user has entered
+     * correct authorization code application opens new dialog for the user to choose json file from his/her Dropbox
+     * folder. Loads selected file to TableView.
+     * @param app Application to open authorization url with.
+     * @param table TableView to load json file to.
+     */
     public void download(Application app, TableView<Product> table) {
         try {
             DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
@@ -66,6 +76,12 @@ public class DropboxDownload {
         }
     }
 
+    /**
+     * Downloads given file from Dropbox and turns it to ObservableList<Product>
+     * @param file Files name to download.
+     * @param client DbxClientV2 to download file from Dropbox.
+     * @return Optional ObservableList<Product> created from downloaded file.
+     */
     private Optional<ObservableList<Product>> dropboxDownloadFile(String file, DbxClientV2 client) {
         try {
             DbxDownloader<FileMetadata> downloader = client.files().download("/"+file);
@@ -82,6 +98,11 @@ public class DropboxDownload {
         return Optional.ofNullable(null);
     }
 
+    /**
+     * Creates ObservableList<FileItem> from user's json files in Dropbox.
+     * @param client DbxClientV2 to access user's Dropbox.
+     * @return ObservableList<FileItem> created from user's json files in Dropbox.
+     */
     private ObservableList<FileItem> getFilesDropbox(DbxClientV2 client) {
         ObservableList<FileItem> files = FXCollections.observableArrayList();
         try {
@@ -98,6 +119,12 @@ public class DropboxDownload {
         return files;
     }
 
+    /**
+     * Creates dialog window for user to open Dropbox authorization in browser and to enter Dropbox authentication code.
+     * @param url Authorization url to open.
+     * @param app Application to open authorization url with.
+     * @return Optional of Authentication code to user's Dropbox.
+     */
     private Optional<String> getAuthUrl(String url, Application app) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Dropbox Authentication");
@@ -148,6 +175,11 @@ public class DropboxDownload {
         return result;
     }
 
+    /**
+     * Creates dialog window for user to choose file to download.
+     * @param files Json files in user's Dropbox.
+     * @return Optional of chosen json file in user's Dropbox.
+     */
     private Optional<String> generateFilePicker(ObservableList<FileItem> files) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png"))));
@@ -171,6 +203,11 @@ public class DropboxDownload {
         return result;
     }
 
+    /**
+     * Generates TableView with given parameter which contains user's json file's names in Dropbox.
+     * @param files User's json files in Dropbox.
+     * @return TableView created with given parameter.
+     */
     private TableView<FileItem> generateTable(ObservableList<FileItem> files) {
         TableView<FileItem> tableView = new TableView<>();
 
@@ -184,17 +221,39 @@ public class DropboxDownload {
         return tableView;
     }
 
+    /**
+     * Used in TableView by DropboxDownload.
+     *
+     * @author Tuukka Juusela
+     * @version 2018.1412
+     * @since 1.8
+     */
     public class FileItem {
+        /**
+         * Name of the item.
+         */
         String name;
 
+        /**
+         * Constructor. Sets name of the item.
+         * @param name name of the item.
+         */
         FileItem(String name) {
             setName(name);
         }
 
+        /**
+         * Returns name of the item.
+         * @return
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * Set name of the item.
+         * @param name of the item.
+         */
         public void setName(String name) {
             this.name = name;
         }
