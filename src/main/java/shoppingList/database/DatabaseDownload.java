@@ -17,10 +17,10 @@ import java.sql.*;
 import java.util.Optional;
 
 public class DatabaseDownload {
-    private static final String JDBC_DRIVER = "org.h2.Driver";
-    private static final String DB_URL = "jdbc:h2:~/TuukkaLister;";
-    private static final String USER = "sa";
-    private static final String PASS = "";
+    private final String JDBC_DRIVER = "org.h2.Driver";
+    private final String DB_URL = "jdbc:h2:~/TuukkaLister;";
+    private final String USER = "sa";
+    private final String PASS = "";
 
     public Optional<ObservableList<Product>> download() {
         Optional<ObservableList<FileItem>> table = getTables();
