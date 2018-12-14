@@ -27,6 +27,7 @@ public class DatabaseDownload {
         if(table.isPresent()) {
             Optional<String> chosenTable = generateFilePicker(table.get());
             if (chosenTable.isPresent()) {
+                new DatabaseDialogs().generateDialog("H2 Database", "Download from database was successful");
                 return Optional.ofNullable(loadTable(chosenTable.get()));
             }
         }
