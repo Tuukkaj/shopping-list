@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.sql.*;
 import java.util.Optional;
 
@@ -20,8 +21,11 @@ public class DatabaseDrop {
     private static final String PASS = "";
 
     public void drop() {
-        Optional<String> chosenTable = generateFilePicker(getTables());
-        chosenTable.ifPresent(this::dropTable);
+        Optional<ObservableList<FileItem>> table = getTables();
+        if(table.isPresent()) {
+            Optional<String> chosenTable = generateFilePicker(table.get());
+            chosenTable.ifPresent(this::dropTable);
+        }
     }
 
     private void dropTable(String tableName) {
@@ -100,7 +104,7 @@ public class DatabaseDrop {
         return tableView;
     }
 
-    private ObservableList<FileItem> getTables() {
+    private Optional<ObservableList<FileItem>> getTables() {
         ObservableList<FileItem> tables = FXCollections.observableArrayList();
         Connection conn = null;
         Statement stmt = null;
@@ -122,6 +126,7 @@ public class DatabaseDrop {
             new DatabaseErrorDialogs().generateSQLError("Something went wrong when dropping table\n" +
                     "Make sure that you don't have other connections to H2 database.");
             se.printStackTrace();
+            return Optional.ofNullable(null);
         } catch(Exception e) {
             new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
@@ -139,7 +144,8 @@ public class DatabaseDrop {
         }
         System.out.println("Goodbye!");
 
-        return tables;
+
+        return Optional.of(tables);
     }
 
     public class FileItem {
