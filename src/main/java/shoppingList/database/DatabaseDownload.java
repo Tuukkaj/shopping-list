@@ -16,12 +16,35 @@ import shoppingList.FileItem;
 import java.sql.*;
 import java.util.Optional;
 
+/**
+ * Handles Dropping table from H2 Database. Url to H2Database is "jdbc:h2:~/TuukkaLister".
+ *
+ * @author Tuukka Juusela
+ * @version 2018.1412
+ * @since 1.8
+ */
 public class DatabaseDownload {
+    /**
+     * Driver of H2 database.
+     */
     private final String JDBC_DRIVER = "org.h2.Driver";
+    /**'
+     * Database url for this application.
+     */
     private final String DB_URL = "jdbc:h2:~/TuukkaLister;";
+    /**
+     * User information for Database.
+     */
     private final String USER = "sa";
+    /**
+     * Password for Database.
+     */
     private final String PASS = "";
 
+    /**
+     * Asks user which table to Download from H2 database and returns chosen table as Optional<ObservableList<FileItem>>
+     * @return ObservableList created from table in H2 database.
+     */
     public Optional<ObservableList<Product>> download() {
         Optional<ObservableList<FileItem>> table = getTables();
         if(table.isPresent()) {
@@ -35,6 +58,11 @@ public class DatabaseDownload {
         return Optional.empty();
     }
 
+    /**
+     * Loads table from H2 database and turns it to ObservableList.
+     * @param tableName table to load from database.
+     * @return ObservableList created from table in database.
+     */
     private ObservableList<Product> loadTable(String tableName) {
         ObservableList<Product> products = FXCollections.observableArrayList();
         Connection conn = null;
@@ -75,6 +103,11 @@ public class DatabaseDownload {
         return products;
     }
 
+    /**
+     * Generates dialog window that asks user to choose table to load.
+     * @param tables ObservableList of tables in H2 database. Used to create TableView.
+     * @return Table in database that user chose to download.
+     */
     private Optional<String> generateFilePicker(ObservableList<FileItem> tables) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png"))));
@@ -103,6 +136,11 @@ public class DatabaseDownload {
         return result;
     }
 
+    /**
+     * Generates TableView from given ObservableList.
+     * @param tables Tables in H2 database.
+     * @return TableView generated from given ObservableList.
+     */
     private TableView<FileItem> generateTable(ObservableList<FileItem> tables) {
         TableView<FileItem> tableView = new TableView<>();
 
@@ -116,6 +154,10 @@ public class DatabaseDownload {
         return tableView;
     }
 
+    /**
+     * Loads table names from H2 database and converts them to ObservableList.
+     * @return Optional ObservableList containing table names in H2 database.
+     */
     private Optional<ObservableList<FileItem>> getTables() {
         ObservableList<FileItem> tables = FXCollections.observableArrayList();
         Connection conn = null;
