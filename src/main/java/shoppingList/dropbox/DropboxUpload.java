@@ -22,7 +22,7 @@ import java.io.*;
 import java.util.Optional;
 
 /**
- * Handles everything related to Dropbox.
+ * Handles everything related to uploading shopping list to Dropbox.
  *
  * @author Tuukka Juusela
  * @version 2018.0212
