@@ -18,12 +18,36 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
+/**
+ * Handles Dropping table from H2 Database. Url to H2Database is "jdbc:h2:~/TuukkaLister".
+ *
+ * @author Tuukka Juusela
+ * @version 2018.1412
+ * @since 1.8
+ */
 public class DatabaseUpload {
+    /**
+     * Driver of H2 database.
+     */
     private final String JDBC_DRIVER = "org.h2.Driver";
+    /**'
+     * Database url for this application.
+     */
     private final String DB_URL = "jdbc:h2:~/TuukkaLister;";
+    /**
+     * User information for Database.
+     */
     private final String USER = "sa";
+    /**
+     * Password for Database.
+     */
     private final String PASS = "";
 
+    /**
+     * Main method of the class. Uploads given parameter ObservableList to H2Database. Asks user for name of the table
+     * in database.
+     * @param list
+     */
     public void upload(ObservableList<Product> list) {
         Optional<String> tableName = generateTableNameDialog();
         if(tableName.isPresent()) {
@@ -31,6 +55,10 @@ public class DatabaseUpload {
         }
     }
 
+    /**
+     * Generates dialog window that ask user for table's name.
+     * @return Optional name of the table.
+     */
     private Optional<String> generateTableNameDialog() {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("H2 Upload");
@@ -77,6 +105,11 @@ public class DatabaseUpload {
         return result;
     }
 
+    /**
+     * Uploads given parameter ObservableList to database with name given in parameter tableName.
+     * @param list ObservableList to upload to database.
+     * @param tableName Table's name in database.
+     */
     private void executeUpload(ObservableList<Product> list, String tableName) {
         Connection conn = null;
         Statement stmt = null;
