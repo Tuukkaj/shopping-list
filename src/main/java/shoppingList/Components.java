@@ -264,7 +264,7 @@ class Components {
         dropBoxMenu.getItems().addAll(importItem,uploadItem);
 
         //H2 DATABASE
-        Menu database = new Menu("database");
+        Menu database = new Menu("Database");
         MenuItem uploadDatabase = new MenuItem("Upload to H2 database");
         uploadDatabase.setOnAction(e -> new DatabaseUpload().upload(table.getItems()));
         uploadDatabase.setAccelerator(KeyCombination.keyCombination("SHORTCUT+Q"));
