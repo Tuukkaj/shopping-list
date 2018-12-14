@@ -111,11 +111,11 @@ public class DatabaseUpload {
             stmt.close();
             conn.close();
         } catch(SQLException se) {
-            new DatabaseErrorDialogs().generateSQLError("Something went wrong when uploading your table\n" +
+            new DatabaseDialogs().generateSQLError("Something went wrong when uploading your table\n" +
                     "Make sure that you don't have other connections to H2 database.");
             se.printStackTrace();
         } catch(Exception e) {
-            new DatabaseErrorDialogs().generateError();
+            new DatabaseDialogs().generateError();
             e.printStackTrace();
         } finally {
             try{

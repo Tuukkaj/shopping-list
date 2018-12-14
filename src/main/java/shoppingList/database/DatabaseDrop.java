@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import shoppingList.FileItem;
 
-import java.io.File;
 import java.sql.*;
 import java.util.Optional;
 
@@ -48,7 +47,7 @@ public class DatabaseDrop {
         } catch(SQLException se) {
             se.printStackTrace();
         } catch(Exception e) {
-            new DatabaseErrorDialogs().generateError();
+            new DatabaseDialogs().generateError();
             e.printStackTrace();
         } finally {
             try{
@@ -124,12 +123,12 @@ public class DatabaseDrop {
             stmt.close();
             conn.close();
         } catch(SQLException se) {
-            new DatabaseErrorDialogs().generateSQLError("Something went wrong when dropping table\n" +
+            new DatabaseDialogs().generateSQLError("Something went wrong when dropping table\n" +
                     "Make sure that you don't have other connections to H2 database.");
             se.printStackTrace();
             return Optional.empty();
         } catch(Exception e) {
-            new DatabaseErrorDialogs().generateError();
+            new DatabaseDialogs().generateError();
             e.printStackTrace();
         } finally {
             try{

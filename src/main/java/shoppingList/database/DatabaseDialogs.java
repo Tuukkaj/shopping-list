@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class DatabaseErrorDialogs {
+public class DatabaseDialogs {
     public void generateError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
