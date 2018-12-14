@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import shoppingList.json.JSONHandler;
 import shoppingList.Product;
+import shoppingList.FileItem;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -219,43 +220,5 @@ public class DropboxDownload {
         tableView.setItems(files);
 
         return tableView;
-    }
-
-    /**
-     * Used in TableView by DropboxDownload.
-     *
-     * @author Tuukka Juusela
-     * @version 2018.1412
-     * @since 1.8
-     */
-    public class FileItem {
-        /**
-         * Name of the item.
-         */
-        String name;
-
-        /**
-         * Constructor. Sets name of the item.
-         * @param name name of the item.
-         */
-        FileItem(String name) {
-            setName(name);
-        }
-
-        /**
-         * Returns name of the item.
-         * @return
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * Set name of the item.
-         * @param name of the item.
-         */
-        public void setName(String name) {
-            this.name = name;
-        }
     }
 }
