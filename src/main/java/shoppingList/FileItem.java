@@ -23,7 +23,7 @@ public class FileItem {
 
     /**
      * Returns name of the item.
-     * @return
+     * @return name of the item.
      */
     public String getName() {
         return name;
