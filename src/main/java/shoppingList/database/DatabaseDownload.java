@@ -22,12 +22,15 @@ public class DatabaseDownload {
     private static final String PASS = "";
 
     public Optional<ObservableList<Product>> download() {
-        Optional<String> chosenTable = generateFilePicker(getTables());
-        if(chosenTable.isPresent()) {
-            return Optional.ofNullable(loadTable(chosenTable.get()));
+        Optional<ObservableList<FileItem>> table = getTables();
+        if(table.isPresent()) {
+            Optional<String> chosenTable = generateFilePicker(table.get());
+            if (chosenTable.isPresent()) {
+                return Optional.ofNullable(loadTable(chosenTable.get()));
+            }
         }
 
-        return Optional.ofNullable(null);
+        return Optional.empty();
     }
 
     private ObservableList<Product> loadTable(String tableName) {
@@ -111,7 +114,7 @@ public class DatabaseDownload {
         return tableView;
     }
 
-    private ObservableList<FileItem> getTables() {
+    private Optional<ObservableList<FileItem>> getTables() {
         ObservableList<FileItem> tables = FXCollections.observableArrayList();
         Connection conn = null;
         Statement stmt = null;
@@ -133,6 +136,7 @@ public class DatabaseDownload {
             new DatabaseErrorDialogs().generateSQLError("Something went wrong when downloading your table\n" +
                     "Make sure that you don't have other connections to H2 database.");
             se.printStackTrace();
+            return Optional.empty();
         } catch(Exception e) {
             new DatabaseErrorDialogs().generateError();
             e.printStackTrace();
@@ -150,7 +154,7 @@ public class DatabaseDownload {
         }
         System.out.println("Goodbye!");
 
-        return tables;
+        return Optional.of(tables);
     }
 
     public class FileItem {
