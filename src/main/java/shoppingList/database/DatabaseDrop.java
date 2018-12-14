@@ -41,6 +41,7 @@ public class DatabaseDrop {
 
             String sqlDrop = "DROP TABLE " + tableName+";";
             stmt.executeUpdate(sqlDrop);
+            new DatabaseDialogs().generateDialog("H2 Drop Table", "Dropped table " + tableName + " successfully");
 
             stmt.close();
             conn.close();
