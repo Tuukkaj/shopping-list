@@ -82,7 +82,7 @@ public class DropboxDownload {
         return Optional.ofNullable(null);
     }
 
-    ObservableList<FileItem> getFilesDropbox(DbxClientV2 client) {
+    private ObservableList<FileItem> getFilesDropbox(DbxClientV2 client) {
         ObservableList<FileItem> files = FXCollections.observableArrayList();
         try {
             System.out.println("FILES IN DROPBOX: ");
@@ -98,7 +98,7 @@ public class DropboxDownload {
         return files;
     }
 
-    Optional<String> getAuthUrl(String url, Application app) {
+    private Optional<String> getAuthUrl(String url, Application app) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Dropbox Authentication");
         dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the code");
