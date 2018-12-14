@@ -7,7 +7,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+/**
+ * Contains dialog window generation for Database classes.
+ *
+ * @author Tuukka Juusela
+ * @version 2018.1412
+ * @since 1.8
+ */
 public class DatabaseDialogs {
+    /**
+     * Generates general error.
+     */
     public void generateError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
@@ -19,6 +29,10 @@ public class DatabaseDialogs {
         alert.showAndWait();
     }
 
+    /**
+     * Generates SQL error containing message.
+     * @param message Message to use in dialog.
+     */
     public void generateSQLError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
