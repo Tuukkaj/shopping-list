@@ -14,12 +14,34 @@ import shoppingList.FileItem;
 import java.sql.*;
 import java.util.Optional;
 
+/**
+ * Handles Dropping table from H2 Database. Url to H2Database is "jdbc:h2:~/TuukkaLister".
+ *
+ * @author Tuukka Juusela
+ * @version 2018.1412
+ * @since 1.8
+ */
 public class DatabaseDrop {
+    /**
+     * Driver of H2 database.
+     */
     private final String JDBC_DRIVER = "org.h2.Driver";
+    /**'
+     * Database url for this application.
+     */
     private final String DB_URL = "jdbc:h2:~/TuukkaLister;";
+    /**
+     * User information for Database.
+     */
     private final String USER = "sa";
+    /**
+     * Password for Database.
+     */
     private final String PASS = "";
 
+    /**
+     * Main method of the class. Generates Dialog window for user to choose table to drop.
+     */
     public void drop() {
         Optional<ObservableList<FileItem>> table = getTables();
         if(table.isPresent()) {
@@ -28,6 +50,10 @@ public class DatabaseDrop {
         }
     }
 
+    /**
+     * Drops table from H2 Database using given parameter tableName.
+     * @param tableName Table to drop.
+     */
     private void dropTable(String tableName) {
         Connection conn = null;
         Statement stmt = null;
@@ -64,6 +90,11 @@ public class DatabaseDrop {
         }
     }
 
+    /**
+     * Generates Dialog window with TableView in it with Tables from Database in it. User can choose one table from it.
+     * @param tables List of tables in Database.
+     * @return Optional of name of the chosen table.
+     */
     private Optional<String> generateFilePicker(ObservableList<FileItem> tables) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/h2.png"))));
@@ -92,6 +123,11 @@ public class DatabaseDrop {
         return result;
     }
 
+    /**
+     * Generates TableView for generateFileChooser() using given ObservableList.
+     * @param tables Tables in database.
+     * @return TableView generated using given parameter.
+     */
     private TableView<FileItem> generateTable(ObservableList<FileItem> tables) {
         TableView<FileItem> tableView = new TableView<>();
 
@@ -105,6 +141,10 @@ public class DatabaseDrop {
         return tableView;
     }
 
+    /**
+     * Creates ObservableList<FileItem> from tables in H2 Database.
+     * @return ObservableList created from tables in database.
+     */
     private Optional<ObservableList<FileItem>> getTables() {
         ObservableList<FileItem> tables = FXCollections.observableArrayList();
         Connection conn = null;
