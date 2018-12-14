@@ -32,18 +32,16 @@ import java.util.Optional;
  * @since 1.8
  */
 public class DropboxDownload {
-    Application app;
 
     public void download(Application app, TableView<Product> table) {
         try {
-            this.app = app;
             DbxRequestConfig requestConfig = new DbxRequestConfig("Tuukka Lister/1.0");
             DbxWebAuth auth = new DbxWebAuth(requestConfig, DbxAppInfo.Reader.readFully(getClass().getClassLoader().getResourceAsStream("shoppingList/auth.json")));
             DbxWebAuth.Request authRequest = DbxWebAuth.newRequestBuilder()
                     .withNoRedirect()
                     .build();
             String authorizeUrl = auth.authorize(authRequest);
-            Optional<String> code = getAuthUrl(authorizeUrl);
+            Optional<String> code = getAuthUrl(authorizeUrl, app);
 
             if (code.isPresent()) {
                 System.out.print(code.get());
@@ -100,7 +98,7 @@ public class DropboxDownload {
         return files;
     }
 
-    Optional<String> getAuthUrl(String url) {
+    Optional<String> getAuthUrl(String url, Application app) {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Dropbox Authentication");
         dialog.setHeaderText("Click \"Open Link\" and open browser.\nGo through authentication and copy the code");
