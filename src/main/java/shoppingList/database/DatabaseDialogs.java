@@ -33,7 +33,7 @@ public class DatabaseDialogs {
     /**
      * Generates Database dialog with given parameters.
      */
-    private void generateDialog(String title, String message) {
+    public void generateDialog(String title, String message) {
         Dialog dialog = new Dialog();
 
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
