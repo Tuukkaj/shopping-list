@@ -66,6 +66,7 @@ public class DropboxDownload {
                         if(products.isPresent()) {
                             table.getItems().clear();
                             table.getItems().addAll(products.get());
+                            generateDownloadSuccess();
                         }
                     }
                 } catch (DbxException e) {
@@ -220,5 +221,18 @@ public class DropboxDownload {
         tableView.setItems(files);
 
         return tableView;
+    }
+
+    public void generateDownloadSuccess() {
+        Dialog dialog = new Dialog();
+
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png")));
+        dialog.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("shoppingList/icons/dropbox.png"))));
+        dialog.setTitle("Dropbox Download");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Download was successful");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+        dialog.showAndWait();
     }
 }
