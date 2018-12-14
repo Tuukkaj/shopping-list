@@ -24,6 +24,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Optional;
 
+/**
+ * Handles everything related to downloading shopping list from Dropbox.
+ *
+ * @author Tuukka Juusela
+ * @version 2018.1412
+ * @since 1.8
+ */
 public class DropboxDownload {
     Application app;
 
