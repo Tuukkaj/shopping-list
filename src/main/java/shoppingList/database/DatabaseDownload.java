@@ -70,9 +70,8 @@ public class DatabaseDownload {
         try {
             Class.forName(JDBC_DRIVER);
 
-            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            System.out.println("Creating table in given database...");
+
             stmt = conn.createStatement();
 
             String sqlSelectTable = "SELECT * FROM " + tableName + ";";
@@ -165,9 +164,7 @@ public class DatabaseDownload {
         try {
             Class.forName(JDBC_DRIVER);
 
-            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
             ResultSet tableResult = stmt.executeQuery("SHOW TABLES;");
             while (tableResult.next()) {
@@ -196,7 +193,6 @@ public class DatabaseDownload {
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
 
         return Optional.of(tables);
     }
