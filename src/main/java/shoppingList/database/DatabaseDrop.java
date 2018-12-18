@@ -60,9 +60,7 @@ public class DatabaseDrop {
         try {
             Class.forName(JDBC_DRIVER);
 
-            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
 
             String sqlDrop = "DROP TABLE " + tableName+";";
@@ -152,9 +150,7 @@ public class DatabaseDrop {
         try {
             Class.forName(JDBC_DRIVER);
 
-            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
             ResultSet tableResult = stmt.executeQuery("SHOW TABLES;");
             while (tableResult.next()) {
@@ -183,7 +179,6 @@ public class DatabaseDrop {
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
 
 
         return Optional.of(tables);
