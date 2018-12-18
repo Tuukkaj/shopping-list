@@ -116,11 +116,8 @@ public class DatabaseUpload {
         try {
             Class.forName(JDBC_DRIVER);
 
-            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
-            System.out.println("TABLE: " + tableName);
             String dropSql = "DROP TABLE IF EXISTS " + tableName;
             stmt.executeUpdate(dropSql);
             String sql =  "CREATE TABLE "+ tableName +
@@ -134,12 +131,10 @@ public class DatabaseUpload {
             for(int i = 0; i < list.size(); i++) {
                 if(list.get(i).getName().equals("-") && (list.get(i).getQuantity() == 1)) {
                 } else {
-                    System.out.println("INSERT INTO "+tableName+" VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
                     sqlBuilder.append("INSERT INTO "+tableName+" VALUES (" +(i+1)+ ", '"+list.get(i).getName()+"', "+list.get(i).getQuantity()+"); ");
                 }
             }
             stmt.executeUpdate(sqlBuilder.toString());
-            System.out.println("Created table in given database...");
             new DatabaseDialogs().generateDialog("H2 Upload", "Upload to H2 was successful");
             stmt.close();
             conn.close();
@@ -162,7 +157,6 @@ public class DatabaseUpload {
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
     }
 }
 
